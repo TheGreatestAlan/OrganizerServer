@@ -25,14 +25,13 @@ public class TodoListResource{
     }
 
     @GET
-    @Timed
-    public String sayHello(@QueryParam("name") Optional<String> name) {
+    public TodoDto sayHello(@QueryParam("name") Optional<String> name) {
         try {
-            return evernoteApi.GetTodoList().get(0);
+            return TodoDto.createTodo(evernoteApi.GetTodoList());
         }
         catch(Exception e)
         {
-            return "uh oh";
+            return null;
         }
     }
 }
