@@ -19,7 +19,7 @@ package com.evernote;
         import com.evernote.thrift.TException;
         import com.google.inject.Inject;
         import com.interfaces.Evernoteable;
-        import com.nguyenConfiguration;
+        import com.OrganizerServerConfiguration;
 
 public class EvernoteApi implements Evernoteable {
 
@@ -33,7 +33,7 @@ public class EvernoteApi implements Evernoteable {
      * - you can copy it straight into your application.
      */
     @Inject
-    public EvernoteApi(nguyenConfiguration configuration) throws Exception {
+    public EvernoteApi(OrganizerServerConfiguration configuration) throws Exception {
         // Set up the UserStore client and check that we can speak to the server
         EvernoteAuth evernoteAuth = new EvernoteAuth(EvernoteService.SANDBOX, configuration.getEvernoteToken());
         ClientFactory factory = new ClientFactory(evernoteAuth);

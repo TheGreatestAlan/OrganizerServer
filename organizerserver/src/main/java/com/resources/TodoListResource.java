@@ -3,7 +3,6 @@ package com.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.google.inject.Inject;
 import com.interfaces.Evernoteable;
-import com.nguyenConfiguration;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
