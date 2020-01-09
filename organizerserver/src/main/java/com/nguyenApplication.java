@@ -1,6 +1,8 @@
 package com;
 
-import com.evernote.EvernoteApi;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.interfaces.Evernoteable;
 import com.resources.TodoListResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -22,15 +24,11 @@ public class nguyenApplication extends Application<nguyenConfiguration> {
     }
 
     @Override
-    public void initialize(final Bootstrap<nguyenConfiguration> bootstrap) {
-        // TODO: application initialization
-    }
-
-    @Override
     public void run(final nguyenConfiguration configuration,
                     final Environment environment) {
-        final TodoListResource todoListResource = new TodoListResource(configuration);
-        environment.jersey().register(todoListResource);
+        Injector injector = Guice.createInjector(new ServerModule(configuration));
+        final TodoListResource resource = new TodoListResource(injector.getInstance(Evernoteable.class));
+        environment.jersey().register(resource);
     }
 
 }

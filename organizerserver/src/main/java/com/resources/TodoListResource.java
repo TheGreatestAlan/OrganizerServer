@@ -1,6 +1,8 @@
 package com.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.inject.Inject;
+import com.interfaces.Evernoteable;
 import com.nguyenConfiguration;
 
 import javax.ws.rs.GET;
@@ -15,16 +17,23 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 public class TodoListResource{
     private final AtomicLong counter;
-    private final nguyenConfiguration configuration;
+    private final Evernoteable evernoteApi;
 
-    public TodoListResource(nguyenConfiguration configuration) {
-        this.configuration = configuration;
+    @Inject
+    public TodoListResource(Evernoteable evernoteApi) {
+        this.evernoteApi = evernoteApi;
         this.counter = new AtomicLong();
     }
 
     @GET
     @Timed
     public String sayHello(@QueryParam("name") Optional<String> name) {
-        return configuration.getEvernoteConsumerKey();
+        try {
+            return evernoteApi.GetTodoList().get(0);
+        }
+        catch(Exception e)
+        {
+            return "uh oh";
+        }
     }
 }

@@ -17,8 +17,11 @@ package com.evernote;
         import com.evernote.edam.type.NoteSortOrder;
         import com.evernote.edam.type.Notebook;
         import com.evernote.thrift.TException;
+        import com.google.inject.Inject;
+        import com.interfaces.Evernoteable;
+        import com.nguyenConfiguration;
 
-public class EvernoteApi{
+public class EvernoteApi implements Evernoteable {
 
     private static final String AUTH_TOKEN = "your developer token";
 
@@ -29,9 +32,10 @@ public class EvernoteApi{
      * authenticate with the Evernote web service. All of this code is boilerplate
      * - you can copy it straight into your application.
      */
-    public EvernoteApi(String token) throws Exception {
+    @Inject
+    public EvernoteApi(nguyenConfiguration configuration) throws Exception {
         // Set up the UserStore client and check that we can speak to the server
-        EvernoteAuth evernoteAuth = new EvernoteAuth(EvernoteService.SANDBOX, token);
+        EvernoteAuth evernoteAuth = new EvernoteAuth(EvernoteService.SANDBOX, configuration.getEvernoteToken());
         ClientFactory factory = new ClientFactory(evernoteAuth);
         userStore = factory.createUserStoreClient();
 
@@ -50,8 +54,7 @@ public class EvernoteApi{
     public List<String> GetTodoList() throws Exception{
         Note todoListNote = findNoteByNoteTitleAndNotebookName(OrganizerConstants.SERVER_ORGANIZER_NOTEBOOK_NAME, OrganizerConstants.SERVER_ORGANIZER_TODOLIST_NOTE_TITLE);
         String content = todoListNote.getContent();
-        parseTodoList(content);
-        return null;
+        return parseTodoList(content);
     }
 
     private List<String> parseTodoList(String enmlTodoList)

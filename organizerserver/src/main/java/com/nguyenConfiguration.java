@@ -3,24 +3,25 @@ package com;
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.*;
-import javax.validation.constraints.*;
-import javax.validation.constraints.NotEmpty;
+/*import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;*/
 
 public class nguyenConfiguration extends Configuration {
     // TODO: implement service configuration
-    @NotEmpty
+//    @NotEmpty
     private String template;
 
-    @NotEmpty
+//    @NotEmpty
     private String defaultName = "Stranger";
 
-    @NotEmpty
+//    @NotEmpty
     private String evernoteToken;
 
-    @NotEmpty
+//    @NotEmpty
     private String evernoteConsumerKey;
 
-    @NotEmpty String evernoteConsumerSecret;
+//    @NotEmpty
+    String evernoteConsumerSecret;
 
     @JsonProperty
     public String getTemplate() {
