@@ -1,6 +1,5 @@
 package com.resources;
 
-import com.codahale.metrics.annotation.Timed;
 import com.google.inject.Inject;
 import com.interfaces.Evernoteable;
 
@@ -14,24 +13,23 @@ import java.util.Optional;
 
 @Path("/todo")
 @Produces(MediaType.APPLICATION_JSON)
-public class TodoListResource{
-    private final AtomicLong counter;
-    private final Evernoteable evernoteApi;
+public class TodoListResource {
 
-    @Inject
-    public TodoListResource(Evernoteable evernoteApi) {
-        this.evernoteApi = evernoteApi;
-        this.counter = new AtomicLong();
-    }
+  private final AtomicLong counter;
+  private final Evernoteable evernoteApi;
 
-    @GET
-    public TodoDto sayHello(@QueryParam("name") Optional<String> name) {
-        try {
-            return TodoDto.createTodo(evernoteApi.GetTodoList());
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
+  @Inject
+  public TodoListResource(Evernoteable evernoteApi) {
+    this.evernoteApi = evernoteApi;
+    this.counter = new AtomicLong();
+  }
+
+  @GET
+  public TodoDto sayHello(@QueryParam("name") Optional<String> name) {
+    try {
+      return TodoDto.createTodo(evernoteApi.GetTodoList());
+    } catch (Exception e) {
+      return null;
     }
+  }
 }
