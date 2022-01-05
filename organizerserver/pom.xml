@@ -31,7 +31,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>io.dropwizard</groupId>
@@ -41,11 +40,6 @@
       <groupId>com.evernote</groupId>
       <artifactId>evernote-api</artifactId>
       <version>1.25.1</version>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>4.0</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

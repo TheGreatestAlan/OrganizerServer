@@ -1,5 +1,8 @@
 package com.evernote;
 
+import static com.OrganizerConstants.ITEM_LOCATION_NOTE_NAME;
+import static com.OrganizerConstants.SERVER_ORGANIZER_NOTEBOOK_NAME;
+
 import com.evernote.edam.type.SharedNotebook;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,18 +14,14 @@ import com.evernote.auth.EvernoteService;
 import com.evernote.clients.ClientFactory;
 import com.evernote.clients.NoteStoreClient;
 import com.evernote.clients.UserStoreClient;
-import com.evernote.edam.error.EDAMNotFoundException;
-import com.evernote.edam.error.EDAMSystemException;
-import com.evernote.edam.error.EDAMUserException;
 import com.evernote.edam.notestore.*;
 import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
 import com.evernote.edam.type.Notebook;
-import com.evernote.thrift.TException;
-import com.google.inject.Inject;
 import com.interfaces.Evernoteable;
 import com.OrganizerServerConfiguration;
 import java.util.stream.Collectors;
+import javax.inject.Inject;
 
 public class EvernoteApi implements Evernoteable {
 
@@ -34,26 +33,29 @@ public class EvernoteApi implements Evernoteable {
    * web service. All of this code is boilerplate - you can copy it straight into your application.
    */
   @Inject
-  public EvernoteApi(OrganizerServerConfiguration configuration) throws Exception {
+  public EvernoteApi(OrganizerServerConfiguration configuration) {
     this(configuration.getEvernoteToken());
   }
 
-  public EvernoteApi(String token) throws Exception {
+  public EvernoteApi(String token) {
     // Set up the UserStore client and check that we can speak to the server
     EvernoteAuth evernoteAuth = new EvernoteAuth(EvernoteService.PRODUCTION, token);
     ClientFactory factory = new ClientFactory(evernoteAuth);
-    userStore = factory.createUserStoreClient();
+    try {
+      userStore = factory.createUserStoreClient();
+      boolean versionOk = userStore.checkVersion("Evernote EvernoteApi (Java)",
+          com.evernote.edam.userstore.Constants.EDAM_VERSION_MAJOR,
+          com.evernote.edam.userstore.Constants.EDAM_VERSION_MINOR);
+      if (!versionOk) {
+        System.err.println("Incompatible Evernote client protocol version");
+        System.exit(1);
+      }
 
-    boolean versionOk = userStore.checkVersion("Evernote EvernoteApi (Java)",
-        com.evernote.edam.userstore.Constants.EDAM_VERSION_MAJOR,
-        com.evernote.edam.userstore.Constants.EDAM_VERSION_MINOR);
-    if (!versionOk) {
-      System.err.println("Incompatible Evernote client protocol version");
-      System.exit(1);
+      // Set up the NoteStore client
+      noteStore = factory.createNoteStoreClient();
+    } catch (Exception e) {
+      throw new RuntimeException("Could not create user store", e);
     }
-
-    // Set up the NoteStore client
-    noteStore = factory.createNoteStoreClient();
   }
 
   public List<String> GetTodoList() {
@@ -127,22 +129,12 @@ public class EvernoteApi implements Evernoteable {
         }
       }
     }
-    return null;
+    throw new RuntimeException("Could not find note");
   }
 
-  public Note getItemLocation() {
-    try {
-      NoteFilter noteFilter = new NoteFilter();
-
-      String guid = listNoteBooks().stream()
-          .filter(notebook -> notebook.getName().equalsIgnoreCase("organizer")).collect(
-              Collectors.toList()).get(0).getGuid();
-      noteFilter.setNotebookGuid(guid);
-      NoteList noteList = noteStore.findNotes(noteFilter, 0, 100);
-      return noteStore.getNote(noteList.getNotes().get(0).getGuid(), true, false, false, false);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
+  public List<String> getOrganizerInventory() {
+    return parseNote(findNoteByNoteTitleAndNotebookName(SERVER_ORGANIZER_NOTEBOOK_NAME,
+        ITEM_LOCATION_NOTE_NAME).getContent());
   }
 
   public List<Notebook> listAllNoteBooks() {

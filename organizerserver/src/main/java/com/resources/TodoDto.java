@@ -6,20 +6,19 @@ import java.util.List;
 
 public class TodoDto {
 
-    private List<String> todoList;
+  private List<String> todoList;
 
-    public TodoDto() {
-    }
+  public TodoDto() {
+  }
 
-    @JsonProperty
-    public List<String> getTodoList() {
-        return todoList;
-    }
+  @JsonProperty
+  public List<String> getTodoList() {
+    return todoList;
+  }
 
-    public static TodoDto createTodo(List<String> todo)
-    {
-        TodoDto todoDto = new TodoDto();
-        todoDto.todoList = todo;
-        return todoDto;
-    }
+  public static TodoDto createTodo(List<String> todo) {
+    TodoDto todoDto = new TodoDto();
+    todoDto.todoList = todo;
+    return todoDto;
+  }
 }

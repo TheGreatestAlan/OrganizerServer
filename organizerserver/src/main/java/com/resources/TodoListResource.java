@@ -1,6 +1,5 @@
 package com.resources;
 
-import com.google.inject.Inject;
 import com.interfaces.Evernoteable;
 
 import javax.ws.rs.GET;
@@ -18,7 +17,6 @@ public class TodoListResource {
   private final AtomicLong counter;
   private final Evernoteable evernoteApi;
 
-  @Inject
   public TodoListResource(Evernoteable evernoteApi) {
     this.evernoteApi = evernoteApi;
     this.counter = new AtomicLong();
