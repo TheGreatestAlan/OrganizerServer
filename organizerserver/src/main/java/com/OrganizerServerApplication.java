@@ -1,6 +1,7 @@
 package com;
 
 import com.evernote.EvernoteApi;
+import com.interfaces.OrganizerRepository;
 import com.resources.InventoryResource;
 import com.services.Inventory;
 import io.dropwizard.Application;
@@ -15,8 +16,9 @@ public class OrganizerServerApplication extends Application<OrganizerServerConfi
   @Override
   public void run(final OrganizerServerConfiguration configuration,
       final Environment environment) {
-    EvernoteApi evernoteApi = new EvernoteApi(configuration);
-    Inventory inventory = new Inventory(evernoteApi);
+    OrganizerRepository organizerRepository = new EvernoteApi(configuration);
+
+    Inventory inventory = new Inventory(organizerRepository);
     final InventoryResource inventoryResource = new InventoryResource(inventory);
     environment.jersey().register(inventoryResource);
   }

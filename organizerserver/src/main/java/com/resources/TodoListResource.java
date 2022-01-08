@@ -1,6 +1,6 @@
 package com.resources;
 
-import com.interfaces.Evernoteable;
+import com.interfaces.OrganizerRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,9 +15,9 @@ import java.util.Optional;
 public class TodoListResource {
 
   private final AtomicLong counter;
-  private final Evernoteable evernoteApi;
+  private final OrganizerRepository evernoteApi;
 
-  public TodoListResource(Evernoteable evernoteApi) {
+  public TodoListResource(OrganizerRepository evernoteApi) {
     this.evernoteApi = evernoteApi;
     this.counter = new AtomicLong();
   }

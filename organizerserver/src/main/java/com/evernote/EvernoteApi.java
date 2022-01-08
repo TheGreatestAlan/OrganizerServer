@@ -1,8 +1,12 @@
 package com.evernote;
 
+import static com.OrganizerConstants.CONTAINER_LOCATION_NOTE_NAME;
 import static com.OrganizerConstants.ITEM_LOCATION_NOTE_NAME;
 import static com.OrganizerConstants.SERVER_ORGANIZER_NOTEBOOK_NAME;
 
+import com.RateLimitException;
+import com.evernote.edam.error.EDAMErrorCode;
+import com.evernote.edam.error.EDAMSystemException;
 import com.evernote.edam.type.SharedNotebook;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,12 +22,12 @@ import com.evernote.edam.notestore.*;
 import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
 import com.evernote.edam.type.Notebook;
-import com.interfaces.Evernoteable;
+import com.interfaces.OrganizerRepository;
 import com.OrganizerServerConfiguration;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
-public class EvernoteApi implements Evernoteable {
+public class EvernoteApi implements OrganizerRepository {
 
   private UserStoreClient userStore;
   private NoteStoreClient noteStore;
@@ -137,6 +141,11 @@ public class EvernoteApi implements Evernoteable {
         ITEM_LOCATION_NOTE_NAME).getContent());
   }
 
+  public List<String> getContainerLocation() {
+    return parseNote(findNoteByNoteTitleAndNotebookName(SERVER_ORGANIZER_NOTEBOOK_NAME,
+        CONTAINER_LOCATION_NOTE_NAME).getContent());
+  }
+
   public List<Notebook> listAllNoteBooks() {
     return listNoteBooks();
   }
@@ -156,6 +165,11 @@ public class EvernoteApi implements Evernoteable {
   private List<Notebook> listNoteBooks() {
     try {
       return noteStore.listNotebooks();
+    } catch (EDAMSystemException e) {
+      if (e.getErrorCode() == EDAMErrorCode.RATE_LIMIT_REACHED) {
+        throw new RateLimitException();
+      }
+      throw new RuntimeException(e);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

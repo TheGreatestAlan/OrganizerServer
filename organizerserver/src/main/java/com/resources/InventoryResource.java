@@ -24,9 +24,15 @@ public class InventoryResource {
   }
 
   @GET
-  @Path("/{item}")
-  public Response findLocation(@PathParam("item") String item) {
-    return buildResponse(inventory.findItem(item));
+  @Path("/item/{itemName}")
+  public Response findLocation(@PathParam("itemName") String itemName) {
+    return buildResponse(inventory.findItem(itemName));
+  }
+
+  @GET
+  @Path("/container/{containerId}")
+  public Response findContainer(@PathParam("containerId") String containerId) {
+    return buildResponse(inventory.findContainerLocation(containerId));
   }
 
   private Response buildResponse(Object entity) {

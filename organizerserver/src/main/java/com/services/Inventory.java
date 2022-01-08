@@ -1,32 +1,59 @@
 package com.services;
 
-import com.evernote.EvernoteApi;
+import com.RateLimitException;
+import com.interfaces.OrganizerRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class Inventory {
 
-  EvernoteApi evernoteApi;
+  OrganizerRepository organizerRepository;
+  List<String> cachedOrganizerInventory;
+  List<String> cachedContainerLocation;
 
-  public Inventory(EvernoteApi evernoteApi) {
-    this.evernoteApi = evernoteApi;
+  public Inventory(OrganizerRepository organizerRepository) {
+    cachedOrganizerInventory = organizerRepository.getOrganizerInventory();
+    cachedContainerLocation = organizerRepository.getContainerLocation();
+    this.organizerRepository = organizerRepository;
   }
 
   public List<String> getOrganizerInventory() {
-    return evernoteApi.getOrganizerInventory();
+    try {
+      cachedOrganizerInventory = organizerRepository.getOrganizerInventory();
+      return cachedOrganizerInventory;
+    } catch (RateLimitException e) {
+      return cachedOrganizerInventory;
+    }
+  }
+
+
+  public List<String> getContainerLocation() {
+    try {
+      cachedContainerLocation = organizerRepository.getContainerLocation();
+      return cachedContainerLocation;
+    } catch (RateLimitException e) {
+      return cachedContainerLocation;
+    }
   }
 
   public List<String> findItem(String itemName) {
+    return findFromRepoTable(itemName, getOrganizerInventory());
+  }
+
+  public List<String> findContainerLocation(String containerId) {
+    return findFromRepoTable(containerId, getContainerLocation());
+  }
+
+  public List<String> findFromRepoTable(String query, List<String> repoTable) {
     List<String> results = new ArrayList<>();
-    List<String> itemLocations = getOrganizerInventory();
-    for (String itemLocation : itemLocations) {
-      String[] itemPair = itemLocation.split(":");
+    for (String rows : repoTable) {
+      String[] itemPair = rows.split(":");
       String foundItem = "";
       boolean itemFoundInRow = false;
       for (String item : itemPair[1].split(",")) {
         if (item.toLowerCase(Locale.ROOT)
-            .contains(itemName.toLowerCase(Locale.ROOT))) {
+            .contains(query.toLowerCase(Locale.ROOT))) {
           if (!itemFoundInRow) {
             foundItem = itemPair[0] + ":";
           }
