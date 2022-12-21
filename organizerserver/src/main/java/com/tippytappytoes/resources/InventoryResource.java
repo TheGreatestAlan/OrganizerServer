@@ -1,6 +1,6 @@
-package com.resources;
+package com.tippytappytoes.resources;
 
-import com.services.Inventory;
+import com.tippytappytoes.services.Inventory;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;

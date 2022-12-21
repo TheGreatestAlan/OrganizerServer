@@ -1,4 +1,4 @@
-package com.resources;
+package com.tippytappytoes.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

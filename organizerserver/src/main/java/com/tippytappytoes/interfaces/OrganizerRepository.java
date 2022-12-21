@@ -1,4 +1,4 @@
-package com.interfaces;
+package com.tippytappytoes.interfaces;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.resources;
+package com.tippytappytoes.resources;
 
-import com.interfaces.OrganizerRepository;
+import com.tippytappytoes.interfaces.OrganizerRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

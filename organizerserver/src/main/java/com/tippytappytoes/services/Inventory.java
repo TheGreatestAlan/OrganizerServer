@@ -1,7 +1,7 @@
-package com.services;
+package com.tippytappytoes.services;
 
-import com.RateLimitException;
-import com.interfaces.OrganizerRepository;
+import com.tippytappytoes.RateLimitException;
+import com.tippytappytoes.interfaces.OrganizerRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

@@ -1,10 +1,10 @@
-package com.evernote;
+package com.tippytappytoes.evernote;
 
-import static com.OrganizerConstants.CONTAINER_LOCATION_NOTE_NAME;
-import static com.OrganizerConstants.ITEM_LOCATION_NOTE_NAME;
-import static com.OrganizerConstants.SERVER_ORGANIZER_NOTEBOOK_NAME;
+import static com.tippytappytoes.OrganizerConstants.CONTAINER_LOCATION_NOTE_NAME;
+import static com.tippytappytoes.OrganizerConstants.ITEM_LOCATION_NOTE_NAME;
+import static com.tippytappytoes.OrganizerConstants.SERVER_ORGANIZER_NOTEBOOK_NAME;
 
-import com.RateLimitException;
+import com.tippytappytoes.RateLimitException;
 import com.evernote.edam.error.EDAMErrorCode;
 import com.evernote.edam.error.EDAMSystemException;
 import com.evernote.edam.type.SharedNotebook;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.OrganizerConstants;
+import com.tippytappytoes.OrganizerConstants;
 import com.evernote.auth.EvernoteAuth;
 import com.evernote.auth.EvernoteService;
 import com.evernote.clients.ClientFactory;
@@ -22,8 +22,8 @@ import com.evernote.edam.notestore.*;
 import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
 import com.evernote.edam.type.Notebook;
-import com.interfaces.OrganizerRepository;
-import com.OrganizerServerConfiguration;
+import com.tippytappytoes.interfaces.OrganizerRepository;
+import com.tippytappytoes.OrganizerServerConfiguration;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 

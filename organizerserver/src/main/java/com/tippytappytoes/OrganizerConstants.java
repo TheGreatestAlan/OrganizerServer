@@ -1,4 +1,4 @@
-package com;
+package com.tippytappytoes;
 
 public class OrganizerConstants {
 

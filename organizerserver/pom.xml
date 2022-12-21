@@ -17,7 +17,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <dropwizard.version>2.0.0</dropwizard.version>
-    <mainClass>com.OrganizerServerApplication</mainClass>
+    <mainClass>com.tippytappytoes.OrganizerServerApplication</mainClass>
+    <plugin.maven.surefire.version>3.0.0-M3</plugin.maven.surefire.version>
+
   </properties>
 
   <dependencyManagement>
@@ -46,6 +48,16 @@
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.8.2</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-keep</artifactId>
+      <version>v1-rev20210528-1.31.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.oauth-client</groupId>
+      <artifactId>google-oauth-client-jetty</artifactId>
+      <version>1.22.0</version>
     </dependency>
 
   </dependencies>
@@ -88,7 +100,7 @@
                   implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                 <transformer
                   implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.OrganizerServerApplication</mainClass>
+                  <mainClass>com.tippytappytoes.OrganizerServerApplication</mainClass>
                 </transformer>
               </transformers>
             </configuration>
@@ -141,11 +153,8 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>11</source>
-          <target>11</target>
-        </configuration>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${plugin.maven.surefire.version}</version>
       </plugin>
     </plugins>
   </build>
@@ -166,19 +175,4 @@
       </plugin>
     </plugins>
   </reporting>
-  <profiles>
-    <profile>
-      <id>java11+</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <properties>
-        <!--
-        Workaround for "javadoc: error - The code being documented uses modules but the packages
-        defined in https://docs.oracle.com/javase/8/docs/api/ are in the unnamed module."
-        -->
-        <maven.javadoc.skip>true</maven.javadoc.skip>
-      </properties>
-    </profile>
-  </profiles>
 </project>

@@ -1,9 +1,9 @@
-package com;
+package com.tippytappytoes;
 
-import com.evernote.EvernoteApi;
-import com.interfaces.OrganizerRepository;
-import com.resources.InventoryResource;
-import com.services.Inventory;
+import com.tippytappytoes.evernote.EvernoteApi;
+import com.tippytappytoes.interfaces.OrganizerRepository;
+import com.tippytappytoes.resources.InventoryResource;
+import com.tippytappytoes.services.Inventory;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
 
