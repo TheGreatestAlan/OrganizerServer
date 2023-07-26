@@ -1,5 +1,6 @@
 **.jar
 *.class
+*.cred
 *.idea/*
 **/.idea/**
 */target/*
