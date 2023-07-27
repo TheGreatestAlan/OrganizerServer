@@ -1,6 +1,6 @@
-package com.resources;
+package com.nguyen.server.resources;
 
-import com.interfaces.OrganizerRepository;
+import com.nguyen.server.interfaces.OrganizerRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -15,17 +15,17 @@ import java.util.Optional;
 public class TodoListResource {
 
   private final AtomicLong counter;
-  private final OrganizerRepository evernoteApi;
+  private final OrganizerRepository organizerRepository;
 
-  public TodoListResource(OrganizerRepository evernoteApi) {
-    this.evernoteApi = evernoteApi;
+  public TodoListResource(OrganizerRepository organizerRepository) {
+    this.organizerRepository = organizerRepository;
     this.counter = new AtomicLong();
   }
 
   @GET
   public TodoDto sayHello(@QueryParam("name") Optional<String> name) {
     try {
-      return TodoDto.createTodo(evernoteApi.GetTodoList());
+      return TodoDto.createTodo(organizerRepository.getTodoList());
     } catch (Exception e) {
       return null;
     }

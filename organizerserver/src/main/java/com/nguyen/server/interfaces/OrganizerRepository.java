@@ -1,10 +1,10 @@
-package com.interfaces;
+package com.nguyen.server.interfaces;
 
 import java.util.List;
 
 public interface OrganizerRepository {
 
-  List<String> GetTodoList() throws Exception;
+  List<String> getTodoList() throws Exception;
 
   List<String> getOrganizerInventory();
 

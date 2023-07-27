@@ -1,8 +1,10 @@
-package com;
+package com.nguyen.server;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.*;
+
+import javax.validation.constraints.NotEmpty;
 /*import javax.validation.constraints.*;
 import javax.validation.constraints.NotEmpty;*/
 
@@ -19,6 +21,9 @@ public class OrganizerServerConfiguration extends Configuration {
 
 //    @NotEmpty
     private String evernoteConsumerKey;
+
+    @NotEmpty
+    private String obsidianOrganizerVaultLocation;
 
 //    @NotEmpty
     String evernoteConsumerSecret;
@@ -71,5 +76,15 @@ public class OrganizerServerConfiguration extends Configuration {
     @JsonProperty
     public void setEvernoteToken(String evernoteToken) {
         this.evernoteToken = evernoteToken;
+    }
+
+    @JsonProperty
+    public String getObsidianOrganizerVaultLocation() {
+        return obsidianOrganizerVaultLocation;
+    }
+
+    @JsonProperty
+    public void setObsidianOrganizerVaultLocation(String obsidianOrganizerVaultLocation) {
+        this.obsidianOrganizerVaultLocation = obsidianOrganizerVaultLocation;
     }
 }

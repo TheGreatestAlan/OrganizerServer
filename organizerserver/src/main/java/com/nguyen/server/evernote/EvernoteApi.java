@@ -1,10 +1,10 @@
-package com.evernote;
+package com.nguyen.server.evernote;
 
-import static com.OrganizerConstants.CONTAINER_LOCATION_NOTE_NAME;
-import static com.OrganizerConstants.ITEM_LOCATION_NOTE_NAME;
-import static com.OrganizerConstants.SERVER_ORGANIZER_NOTEBOOK_NAME;
+import static com.nguyen.server.OrganizerConstants.CONTAINER_LOCATION_NOTE_NAME;
+import static com.nguyen.server.OrganizerConstants.ITEM_LOCATION_NOTE_NAME;
+import static com.nguyen.server.OrganizerConstants.SERVER_ORGANIZER_NOTEBOOK_NAME;
 
-import com.RateLimitException;
+import com.nguyen.server.RateLimitException;
 import com.evernote.edam.error.EDAMErrorCode;
 import com.evernote.edam.error.EDAMSystemException;
 import com.evernote.edam.type.SharedNotebook;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.OrganizerConstants;
+import com.nguyen.server.OrganizerConstants;
 import com.evernote.auth.EvernoteAuth;
 import com.evernote.auth.EvernoteService;
 import com.evernote.clients.ClientFactory;
@@ -22,8 +22,8 @@ import com.evernote.edam.notestore.*;
 import com.evernote.edam.type.Note;
 import com.evernote.edam.type.NoteSortOrder;
 import com.evernote.edam.type.Notebook;
-import com.interfaces.OrganizerRepository;
-import com.OrganizerServerConfiguration;
+import com.nguyen.server.interfaces.OrganizerRepository;
+import com.nguyen.server.OrganizerServerConfiguration;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 
@@ -62,7 +62,7 @@ public class EvernoteApi implements OrganizerRepository {
     }
   }
 
-  public List<String> GetTodoList() {
+  public List<String> getTodoList() {
     Note todoListNote = null;
     try {
       todoListNote = findNoteByNoteTitleAndNotebookName(

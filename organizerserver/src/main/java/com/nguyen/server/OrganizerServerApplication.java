@@ -1,9 +1,10 @@
-package com;
+package com.nguyen.server;
 
-import com.evernote.EvernoteApi;
-import com.interfaces.OrganizerRepository;
-import com.resources.InventoryResource;
-import com.services.Inventory;
+import com.nguyen.server.evernote.EvernoteApi;
+import com.nguyen.server.obsidian.ObsidianRepository;
+import com.nguyen.server.resources.InventoryResource;
+import com.nguyen.server.services.Inventory;
+import com.nguyen.server.interfaces.OrganizerRepository;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Environment;
 
@@ -16,7 +17,7 @@ public class OrganizerServerApplication extends Application<OrganizerServerConfi
   @Override
   public void run(final OrganizerServerConfiguration configuration,
       final Environment environment) {
-    OrganizerRepository organizerRepository = new EvernoteApi(configuration);
+    OrganizerRepository organizerRepository = new ObsidianRepository(configuration.getObsidianOrganizerVaultLocation());
 
     Inventory inventory = new Inventory(organizerRepository);
     final InventoryResource inventoryResource = new InventoryResource(inventory);

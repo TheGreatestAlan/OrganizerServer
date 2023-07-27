@@ -1,7 +1,7 @@
-package com.services;
+package com.nguyen.server.services;
 
-import com.RateLimitException;
-import com.interfaces.OrganizerRepository;
+import com.nguyen.server.RateLimitException;
+import com.nguyen.server.interfaces.OrganizerRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

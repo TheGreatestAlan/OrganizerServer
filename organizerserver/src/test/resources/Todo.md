@@ -1,0 +1,61 @@
+- [ ]  take apart footstand samples measure inner tubes
+- [ ]  Google exercises about knee strengthening exercises
+- [ ]  Plug in cable from working monitor to non working monitor to test if it's the cable or the monitor
+- [ ]  Buy plane tickets MIranda
+- [ ]  Wash Dyson Filter leave out to dry fohttps://l.messenger.com/l.php?u=https%3A%2F%2Fwww.printables.com%2Fmodel%2F381089-catch-all-trays-hex-organizer&h=AT00sQwRhUXp7d6yxhCQUFXOIxkU1sLzof31Sg4Rnujdee_Z8IIaelR-XecKX9rAGvwvuWglWbPMZu-6jfUbNMo8vYSSVi6g_G6XKifO9bZD6ZtEvNKrtOR3Y_EUVLk2nQr 24 hours
+- [ ]  Measure with tape measure measure cabinet vitamin organizer
+- [ ]  Outside space for storage box
+- [ ]  Print reprint flatter rings module reprint flatter power endcap
+- [ ]  4.3mm [https://www.printables.com/model/289859-charger-cable-organizer-2nd-edition](https://l.messenger.com/l.php?u=https%3A%2F%2Fwww.printables.com%2Fmodel%2F289859-charger-cable-organizer-2nd-edition&h=AT00sQwRhUXp7d6yxhCQUFXOIxkU1sLzof31Sg4Rnujdee_Z8IIaelR-XecKX9rAGvwvuWglWbPMZu-6jfUbNMo8vYSSVi6g_G6XKifO9bZD6ZtEvNKrtOR3Y_EUVLk2nQ) [https://www.printables.com/model/381089-catch-all-trays-hex-organizer](https://l.messenger.com/l.php?u=https%3A%2F%2Fwww.printables.com%2Fmodel%2F381089-catch-all-trays-hex-organizer&h=AT00sQwRhUXp7d6yxhCQUFXOIxkU1sLzof31Sg4Rnujdee_Z8IIaelR-XecKX9rAGvwvuWglWbPMZu-6jfUbNMo8vYSSVi6g_G6XKifO9bZD6ZtEvNKrtOR3Y_EUVLk2nQ)
+- [ ]  Open up API to internet Design [https://www.thingiverse.com/thing:3891193](https://l.messenger.com/l.php?u=https%3A%2F%2Fwww.thingiverse.com%2Fthing%3A3891193&h=AT00sQwRhUXp7d6yxhCQUFXOIxkU1sLzof31Sg4Rnujdee_Z8IIaelR-XecKX9rAGvwvuWglWbPMZu-6jfUbNMo8vYSSVi6g_G6XKifO9bZD6ZtEvNKrtOR3Y_EUVLk2nQ)
+- [ ]  remove apple logo [https://www.thingiverse.com/thing:4807243](https://l.messenger.com/l.php?u=https%3A%2F%2Fwww.thingiverse.com%2Fthing%3A4807243&h=AT00sQwRhUXp7d6yxhCQUFXOIxkU1sLzof31Sg4Rnujdee_Z8IIaelR-XecKX9rAGvwvuWglWbPMZu-6jfUbNMo8vYSSVi6g_G6XKifO9bZD6ZtEvNKrtOR3Y_EUVLk2nQ)
+- [ ]  Molly endcaps that go vertical
+- [ ]  Model Arduino case with plug
+- [ ]  Raises for the keyboard shelf 4.3 mm
+- [ ]  Design
+- [ ]  handle for coffee travel container
+- [ ]  80mm x 77mm
+- [ ]  Design outside table mount to rail
+- [ ]  38.65x38.65. Little one 26x26. Gap from big side 5 mm
+- [ ]  clean up long USB cord off wall
+- [ ]  clean out computer replace hard drive
+- [ ]  [https://www.youtube.com/watch?v=2qhcp6iVWbw](https://l.messenger.com/l.php?u=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D2qhcp6iVWbw&h=AT00sQwRhUXp7d6yxhCQUFXOIxkU1sLzof31Sg4Rnujdee_Z8IIaelR-XecKX9rAGvwvuWglWbPMZu-6jfUbNMo8vYSSVi6g_G6XKifO9bZD6ZtEvNKrtOR3Y_EUVLk2nQ)
+- [ ]  Get custom coins for new years
+- [ ]  Whitelist service and make organizer service available using Firewalld and install fail2ban But make sure you lock down your sshd config check firewalld note
+- [ ]  Zip tie 3d printer
+- [ ]  Read email from kelly in inbox and read transfer form
+- [ ]  Figure out long headphone cable for music station
+- [ ]  look up what insurance you have
+- [ ]  find a new doctor
+- [ ]  Find place for things you want to put in scrapbook
+- [ ]  Put a journaling session down on how to remember people better
+- [ ]  Question... What problems do you have that you have chosen not to solve so far?
+- [ ]  Put a pen in your backpack
+- [ ]  Look up steps on replacing social security card
+- [ ]  set up printer
+- [ ]  Respond to SRS
+- [ ]  Get distilled water
+- [ ]  [https://obsidian.md/blog/free-your-notes/](https://obsidian.md/blog/free-your-notes/)
+- [ ]  [https://www.youtube.com/watch?v=yyftYXH_P9E](https://www.youtube.com/watch?v=yyftYXH_P9E)
+- [ ]  Sell old galaxy watch 3 and bands
+- [ ]  schedule camping with Frank
+- [ ]  drop off clothes at Goodwill
+- [ ]  dump Camelback
+- [ ]  new test
+- [x]  Get galaxy watch 5 44 mm bands
+- [x]  drop off Clues at Goodwill
+- [x]  garage remote
+- [x]  Test test test
+- [x]  TEST1
+- [x]  TEST2
+- [x]  TEST3
+- [x]  CHECK1
+- [x]  CHECK2
+- [x]  NEWGUY
+- [x]  CHECK1
+- [x]  CHECK2
+- [x]  NEWGUY
+- [x]  Test test test
+- [x]   Apply for remote
+- [x]   check box
+- [x]  New

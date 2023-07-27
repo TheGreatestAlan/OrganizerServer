@@ -1,4 +1,4 @@
-package com.resources;
+package com.nguyen.server.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
