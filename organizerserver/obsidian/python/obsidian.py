@@ -1,3 +1,5 @@
+import os
+
 markdown_checked = '- [x]  '
 markdown_unchecked = '- [ ]  '
 def write_array_to_file(file_path, data_array):
@@ -5,7 +7,6 @@ def write_array_to_file(file_path, data_array):
         with open(file_path, 'w') as file:
             data_string = '\n'.join(data_array)
             file.write(data_string)
-        print(f"Data successfully written to '{file_path}'.")
     except Exception as e:
         print(f"Error: An error occurred while writing to the file '{file_path}': {e}")
 
@@ -34,12 +35,13 @@ def get_todo_list_items(todo_array):
     return unchecked, checked
 
 def get_obsidian_todo():
-    file_path = 'C:\\Users\\Alan\\Documents\\Obsidian Vault\\Organizer\\ToDo.md'
+
+    file_path = os.environ.get("TODO_LOCATION")
     lines_array = read_file_into_array(file_path)
     return get_todo_list_items(lines_array)
 
 def write_obsidian_todo(unchecked, checked):
-    file_path = 'C:\\Users\\Alan\\Documents\\Obsidian Vault\\Organizer\\ToDo.md'
+    file_path = os.environ.get("TODO_LOCATION")
     try:
         with open(file_path, 'w') as file:
             data_string = '\n'.join(merge_into_checklist(unchecked, checked))
