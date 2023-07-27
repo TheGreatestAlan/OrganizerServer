@@ -2,4 +2,4 @@ logging:
   level: INFO
   loggers:
     com: DEBUG
-obsidianOrganizerVaultLocation: C:\Users\Alan\Documents\Obsidian Vault\Organizer
+obsidianOrganizerVaultLocation: ${OBSIDIAN_ORGANIZER_LOCATION:-default}
