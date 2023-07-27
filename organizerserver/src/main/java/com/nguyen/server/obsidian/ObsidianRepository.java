@@ -18,17 +18,17 @@ public class ObsidianRepository implements OrganizerRepository {
     }
     @Override
     public List<String> getTodoList() {
-        return readFile(Path.of(organizerLocation + systemDelimiter() + TODO_LIST_FILENAME));
+        return readFile(Path.of(organizerLocation).resolve(TODO_LIST_FILENAME));
     }
 
     @Override
     public List<String> getOrganizerInventory() {
-        return readFile(Path.of(organizerLocation + systemDelimiter() + ITEM_LOCATION_FILENAME));
+        return readFile(Path.of(organizerLocation).resolve(ITEM_LOCATION_FILENAME));
     }
 
     @Override
     public List<String> getContainerLocation() {
-        return readFile(Path.of(organizerLocation + systemDelimiter() + CONTAINER_LOCATION_FILENAME));
+        return readFile(Path.of(organizerLocation).resolve( CONTAINER_LOCATION_FILENAME));
     }
 
     private List<String> readFile(Path path) {
@@ -39,7 +39,4 @@ public class ObsidianRepository implements OrganizerRepository {
         }
     }
 
-    private String systemDelimiter(){
-        return "\\";
-    }
 }

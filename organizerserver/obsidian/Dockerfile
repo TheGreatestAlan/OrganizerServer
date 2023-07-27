@@ -1,10 +1,7 @@
 FROM ghcr.io/sytone/obsidian-remote:latest
 
 RUN sudo apt update && \
-    sudo apt install -y openssh-server python3 python3-pip && \
-    mkdir /var/run/sshd && \
-    useradd -ms /bin/bash dockeruser && \
-    echo 'dockeruser:password' | chpasswd
+    sudo apt install -y python3 python3-pip && \
 
 # Create a directory in the Docker container
 RUN mkdir /python
