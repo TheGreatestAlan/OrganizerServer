@@ -17,7 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <dropwizard.version>2.0.0</dropwizard.version>
-    <mainClass>com.OrganizerServerApplication</mainClass>
+    <mainClass>com.nguyen.server.OrganizerServerApplication</mainClass>
   </properties>
 
   <dependencyManagement>
@@ -88,7 +88,7 @@
                   implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                 <transformer
                   implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.OrganizerServerApplication</mainClass>
+                  <mainClass>com.nguyen.server.OrganizerServerApplication</mainClass>
                 </transformer>
               </transformers>
             </configuration>
