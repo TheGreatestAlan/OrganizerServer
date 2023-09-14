@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="e5bd97e5-b07a-48ce-a658-04868749be9c" name="Default Changelist" comment="" />
+    <list default="true" id="e5bd97e5-b07a-48ce-a658-04868749be9c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/file/FileOrganizerRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/tippytappytoes/file/FileOrganizerRepoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/OrganizerServerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/OrganizerServerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/OrganizerServerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/OrganizerServerConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/evernote/EvernoteApi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/interfaces/OrganizerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/interfaces/OrganizerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/services/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/tippytappytoes/services/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/organizerserver.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/OrganizerConstants.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/evernote/EvernoteApi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/nguyenApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/nguyenConfiguration.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,18 +33,37 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectId" id="1W22z9zxxM0bTwREaIP4y6yxfd3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
-    <property name="settings.editor.selected.configurable" value="com.maddyhome.idea.vim.ui.VimEmulationConfigurable" />
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.tippytappytoes.evernote" />
+    </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.com.tippytappytoes.OrganizerServerApplication">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="WIDTH" value="400" />
       <option name="HEIGHT" value="300" />
@@ -34,6 +72,20 @@
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.tippytappytoes.OrganizerServerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.tippytappytoes.OrganizerServerApplication" />
+      <module name="organizerserver" />
+      <option name="PROGRAM_PARAMETERS" value="server dev/dev.yml" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -48,6 +100,57 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EvernoteApiTestThingy.standard" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="organizerserver" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tippytappytoes.evernote.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.tippytappytoes.evernote" />
+      <option name="MAIN_CLASS_NAME" value="com.tippytappytoes.evernote.EvernoteApiTestThingy" />
+      <option name="METHOD_NAME" value="standard" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FileOrganizerRepoTest.todoList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="organizerserver" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tippytappytoes.file.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.tippytappytoes.file" />
+      <option name="MAIN_CLASS_NAME" value="com.tippytappytoes.file.FileOrganizerRepoTest" />
+      <option name="METHOD_NAME" value="todoList" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestApp.intTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="organizerserver" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.tippytappytoes.google.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.tippytappytoes.google" />
+      <option name="MAIN_CLASS_NAME" value="com.tippytappytoes.google.TestApp" />
+      <option name="METHOD_NAME" value="intTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -77,8 +180,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.nguyenApplication" />
+      <item itemvalue="Application.com.tippytappytoes.OrganizerServerApplication" />
+      <item itemvalue="JUnit.FileOrganizerRepoTest.todoList" />
+      <item itemvalue="JUnit.TestApp.intTest" />
+      <item itemvalue="JUnit.EvernoteApiTestThingy.standard" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.com.tippytappytoes.OrganizerServerApplication" />
+        <item itemvalue="JUnit.FileOrganizerRepoTest.todoList" />
+        <item itemvalue="JUnit.TestApp.intTest" />
+        <item itemvalue="JUnit.EvernoteApiTestThingy.standard" />
         <item itemvalue="Application.nguyenApplication" />
       </list>
     </recent_temporary>
@@ -95,6 +209,7 @@
       </list>
     </option>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -108,68 +223,28 @@
     </task>
     <servers />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl" timestamp="1578333675069">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1578333675069" />
-    <state width="1807" height="278" key="GridCell.Tab.0.bottom" timestamp="1578349591392">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1578349591392" />
-    <state width="1807" height="278" key="GridCell.Tab.0.center" timestamp="1578349591392">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1578349591392" />
-    <state width="1807" height="278" key="GridCell.Tab.0.left" timestamp="1578349591391">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1578349591391" />
-    <state width="1807" height="278" key="GridCell.Tab.0.right" timestamp="1578349591392">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state width="1807" height="278" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1578349591392" />
-    <state width="1807" height="344" key="GridCell.Tab.1.bottom" timestamp="1578349591379">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state width="1807" height="344" key="GridCell.Tab.1.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1578349591379" />
-    <state width="1807" height="344" key="GridCell.Tab.1.center" timestamp="1578349591378">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state width="1807" height="344" key="GridCell.Tab.1.center/67.27.1853.1053@67.27.1853.1053" timestamp="1578349591378" />
-    <state width="1807" height="344" key="GridCell.Tab.1.left" timestamp="1578349591377">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state width="1807" height="344" key="GridCell.Tab.1.left/67.27.1853.1053@67.27.1853.1053" timestamp="1578349591377" />
-    <state width="1807" height="344" key="GridCell.Tab.1.right" timestamp="1578349591378">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state width="1807" height="344" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1578349591378" />
-    <state x="526" y="210" width="924" height="684" key="Maven.ArtifactSearchDialog" timestamp="1578344470904">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state x="526" y="210" width="924" height="684" key="Maven.ArtifactSearchDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1578344470904" />
-    <state x="482" y="187" key="SettingsEditor" timestamp="1578335586438">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state x="482" y="187" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1578335586438" />
-    <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1578334141883">
-      <screen x="67" y="27" width="1853" height="1053" />
-    </state>
-    <state x="649" y="380" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1578334141883" />
-  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/evernote/EvernoteApi.java</url>
-          <line>64</line>
-          <option name="timeStamp" value="19" />
+          <url>file://$PROJECT_DIR$/src/test/java/com/tippytappytoes/evernote/EvernoteApiTestThingy.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="40" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/evernote/EvernoteApi.java</url>
-          <line>61</line>
-          <option name="timeStamp" value="23" />
+          <line>48</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/com/tippytappytoes/google/TestApp.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/tippytappytoes/services/Inventory.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

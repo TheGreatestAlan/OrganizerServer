@@ -48,6 +48,9 @@ public class Inventory {
   public List<String> findFromRepoTable(String query, List<String> repoTable) {
     List<String> results = new ArrayList<>();
     for (String rows : repoTable) {
+      if (rows.startsWith("#") || rows.isBlank() || rows.isEmpty()) {
+        continue;
+      }
       String[] itemPair = rows.split(":");
       String foundItem = "";
       boolean itemFoundInRow = false;
