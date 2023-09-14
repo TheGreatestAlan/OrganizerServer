@@ -1,4 +1,1 @@
-logging:
-  level: INFO
-  loggers:
-    com: DEBUG
+ObsidianVaultRepoLocation: ${OBSIDIAN_VAULT_REPO_LOCATION:-default_value}
