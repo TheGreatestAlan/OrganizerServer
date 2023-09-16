@@ -39,6 +39,11 @@
       <artifactId>dropwizard-core</artifactId>
     </dependency>
     <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-configuration</artifactId>
+      <version>${dropwizard.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.evernote</groupId>
       <artifactId>evernote-api</artifactId>
       <version>1.25.1</version>
