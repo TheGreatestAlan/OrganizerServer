@@ -6,4 +6,4 @@ cd $SCRIPT_DIR
 
 cd ..
 mkdir -p artifact
-docker build --rm . -t builder
+docker build --rm . -t organizerserver
