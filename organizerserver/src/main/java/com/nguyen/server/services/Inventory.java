@@ -1,7 +1,14 @@
+<<<<<<<< HEAD:organizerserver/src/main/java/com/nguyen/server/services/Inventory.java
 package com.nguyen.server.services;
 
 import com.nguyen.server.RateLimitException;
 import com.nguyen.server.interfaces.OrganizerRepository;
+========
+package com.tippytappytoes.services;
+
+import com.tippytappytoes.RateLimitException;
+import com.tippytappytoes.interfaces.OrganizerRepository;
+>>>>>>>> local:organizerserver/src/main/java/com/tippytappytoes/services/Inventory.java
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -48,6 +55,9 @@ public class Inventory {
   public List<String> findFromRepoTable(String query, List<String> repoTable) {
     List<String> results = new ArrayList<>();
     for (String rows : repoTable) {
+      if (rows.startsWith("#") || rows.isBlank() || rows.isEmpty()) {
+        continue;
+      }
       String[] itemPair = rows.split(":");
       String foundItem = "";
       boolean itemFoundInRow = false;

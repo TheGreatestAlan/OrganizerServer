@@ -2,9 +2,9 @@ package com.nguyen.server.interfaces;
 
 import java.util.List;
 
-public interface OrganizerRepository {
+public interface OrganizerRepositoryRead {
 
-  List<String> getTodoList() throws Exception;
+  List<String> getTodoList();
 
   List<String> getOrganizerInventory();
 

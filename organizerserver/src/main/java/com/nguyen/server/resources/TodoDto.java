@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:organizerserver/src/main/java/com/nguyen/server/resources/TodoDto.java
 package com.nguyen.server.resources;
+========
+package com.tippytappytoes.resources;
+>>>>>>>> local:organizerserver/src/main/java/com/tippytappytoes/resources/TodoDto.java
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

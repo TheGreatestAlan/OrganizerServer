@@ -1,0 +1,10 @@
+**.jar
+*.class
+*.idea/*
+*/target/*
+target/
+*.swp
+*.iml
+*Thingy
+*.xml
+*~

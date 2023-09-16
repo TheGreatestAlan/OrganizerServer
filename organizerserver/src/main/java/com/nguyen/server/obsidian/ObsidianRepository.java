@@ -1,14 +1,15 @@
 package com.nguyen.server.obsidian;
 
 import com.nguyen.server.OrganizerRepositoryException;
-import com.nguyen.server.interfaces.OrganizerRepository;
+import com.nguyen.server.interfaces.OrganizerRepositoryRead;
+import com.nguyen.server.interfaces.OrganizerRepositoryWrite;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class ObsidianRepository implements OrganizerRepository {
+public class ObsidianRepository implements OrganizerRepositoryRead, OrganizerRepositoryWrite {
     private String organizerLocation;
     private final static String ITEM_LOCATION_FILENAME = "ItemLocation.md";
     private final static String CONTAINER_LOCATION_FILENAME = "ContainerLocation.md";
@@ -39,4 +40,26 @@ public class ObsidianRepository implements OrganizerRepository {
         }
     }
 
+    private void writeFile(Path path, List<String> lines){
+        try {
+            Files.write(path, lines);
+        } catch (IOException e) {
+            throw new OrganizerRepositoryException(e);
+        }
+
+    }
+
+    @Override
+    public synchronized void addOrganizerInventory(String item, String location) {
+        List<String> lines = getOrganizerInventory();
+        for( String line : lines){
+            System.out.println(line);
+        }
+
+    }
+
+    @Override
+    public void deleteOrganizerInventory(String item, String location) {
+
+    }
 }

@@ -1,6 +1,12 @@
+<<<<<<<< HEAD:organizerserver/src/main/java/com/nguyen/server/resources/InventoryResource.java
 package com.nguyen.server.resources;
 
 import com.nguyen.server.services.Inventory;
+========
+package com.tippytappytoes.resources;
+
+import com.tippytappytoes.services.Inventory;
+>>>>>>>> local:organizerserver/src/main/java/com/tippytappytoes/resources/InventoryResource.java
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
