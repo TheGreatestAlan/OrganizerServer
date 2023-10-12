@@ -1,16 +1,30 @@
 @echo off
 
 REM Set the image name and tag you want to push
-SET IMAGE_NAME=organizerserver:latest
+SET IMAGE_NAME=organizerserver
+SET IMAGE_TAG=latest
 
-REM Check if LOCAL_REGISTRY environment variable is set, if not, default to localhost:5000
-IF "%LOCAL_REGISTRY%"=="" SET LOCAL_REGISTRY=localhost:5000
+REM Set Docker Hub username and repository name
+SET DOCKERHUB_USER=happydance
+SET REPO_NAME=organizerserver
 
-REM Tag the image for the local registry
-docker tag %IMAGE_NAME% %LOCAL_REGISTRY%/%IMAGE_NAME%
+REM Check if DOCKERHUB_USER environment variable is set, if not, exit with error
+IF "%DOCKERHUB_USER%"=="" (
+    echo Error: DOCKERHUB_USER is not set. Exiting.
+    exit /b 1
+)
 
-REM Push the image to the local registry
-docker push %LOCAL_REGISTRY%/%IMAGE_NAME%
+REM Check if REPO_NAME environment variable is set, if not, exit with error
+IF "%REPO_NAME%"=="" (
+    echo Error: REPO_NAME is not set. Exiting.
+    exit /b 1
+)
+
+REM Tag the image for Docker Hub
+docker tag %IMAGE_NAME%:%IMAGE_TAG% %DOCKERHUB_USER%/%REPO_NAME%:%IMAGE_TAG%
+
+REM Push the image to Docker Hub
+docker push %DOCKERHUB_USER%/%REPO_NAME%:%IMAGE_TAG%
 
 REM Print a message to indicate the image has been pushed
-echo Image %IMAGE_NAME% has been pushed to the local registry at %LOCAL_REGISTRY%.
+echo Image %IMAGE_NAME%:%IMAGE_TAG% has been pushed to Docker Hub at %DOCKERHUB_USER%/%REPO_NAME%.
