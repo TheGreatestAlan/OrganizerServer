@@ -11,34 +11,38 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ObsidianRepositoryTest {
-    ObsidianRepository obsidianRepository;
-    private static final String ORGANIZER_LOCATION = "C:\\workspace\\OrganizerServer\\organizerserver\\src\\test\\resources";
-    @BeforeEach
-    public void setup(){
-        obsidianRepository = new ObsidianRepository(ORGANIZER_LOCATION);
-    }
 
-    @Test
-    public void getOrganizerInventory() throws IOException {
-        List<String> expectedItems = Files.readAllLines(Path.of(ORGANIZER_LOCATION + "\\ItemLocation.md"));
-        List<String> actualItems = obsidianRepository.getOrganizerInventory();
+  ObsidianRepository obsidianRepository;
+  private static final String ORGANIZER_LOCATION = "C:\\workspace\\OrganizerServer\\organizerserver\\src\\test\\resources";
 
-        assertEquals(expectedItems, actualItems);
-    }
+  @BeforeEach
+  public void setup() {
+    obsidianRepository = new ObsidianRepository(ORGANIZER_LOCATION);
+  }
 
-    @Test
-    public void getContainerLocation() throws IOException {
-        List<String> expectedItems = Files.readAllLines(Path.of(ORGANIZER_LOCATION + "\\ContainerLocation.md"));
-        List<String> actualItems = obsidianRepository.getContainerLocation();
+  @Test
+  public void getOrganizerInventory() throws IOException {
+    List<String> expectedItems = Files.readAllLines(
+        Path.of(ORGANIZER_LOCATION + "\\ItemLocation.md"));
+    List<String> actualItems = obsidianRepository.getOrganizerInventory();
 
-        assertEquals(expectedItems, actualItems);
-    }
+    assertEquals(expectedItems, actualItems);
+  }
 
-    @Test
-    public void getTodoList() throws IOException {
-        List<String> expectedItems = Files.readAllLines(Path.of(ORGANIZER_LOCATION + "\\Todo.md"));
-        List<String> actualItems = obsidianRepository.getTodoList();
+  @Test
+  public void getContainerLocation() throws IOException {
+    List<String> expectedItems = Files.readAllLines(
+        Path.of(ORGANIZER_LOCATION + "\\ContainerLocation.md"));
+    List<String> actualItems = obsidianRepository.getContainerLocation();
 
-        assertEquals(expectedItems, actualItems);
-    }
+    assertEquals(expectedItems, actualItems);
+  }
+
+  @Test
+  public void getTodoList() throws IOException {
+    List<String> expectedItems = Files.readAllLines(Path.of(ORGANIZER_LOCATION + "\\Todo.md"));
+    List<String> actualItems = obsidianRepository.getTodoList();
+
+    assertEquals(expectedItems, actualItems);
+  }
 }
