@@ -1,0 +1,1 @@
+obsidianOrganizerVaultLocation: ${OBSIDIAN_VAULT_REPO_LOCATION:-default_value}

@@ -1,7 +1,12 @@
 package com.nguyen.server;
 
-public class OrganizerRepositoryException extends OrganizerServerException{
-    public OrganizerRepositoryException(Throwable e) {
-        super(e);
-    }
+public class OrganizerRepositoryException extends OrganizerServerException {
+
+  public OrganizerRepositoryException(Throwable e) {
+    super(e);
+  }
+
+  public OrganizerRepositoryException(String message, Throwable e) {
+    super(message, e);
+  }
 }
