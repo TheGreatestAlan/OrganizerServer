@@ -1,13 +1,6 @@
-<<<<<<<< HEAD:organizerserver/src/main/java/com/nguyen/server/resources/TodoListResource.java
 package com.nguyen.server.resources;
 
 import com.nguyen.server.interfaces.OrganizerRepository;
-========
-package com.tippytappytoes.resources;
-
-import com.tippytappytoes.interfaces.OrganizerRepository;
->>>>>>>> local:organizerserver/src/main/java/com/tippytappytoes/resources/TodoListResource.java
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;

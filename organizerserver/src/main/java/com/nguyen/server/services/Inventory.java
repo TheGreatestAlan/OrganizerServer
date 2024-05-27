@@ -1,14 +1,7 @@
-<<<<<<<< HEAD:organizerserver/src/main/java/com/nguyen/server/services/Inventory.java
 package com.nguyen.server.services;
 
 import com.nguyen.server.RateLimitException;
 import com.nguyen.server.interfaces.OrganizerRepository;
-========
-package com.tippytappytoes.services;
-
-import com.tippytappytoes.RateLimitException;
-import com.tippytappytoes.interfaces.OrganizerRepository;
->>>>>>>> local:organizerserver/src/main/java/com/tippytappytoes/services/Inventory.java
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -62,6 +55,10 @@ public class Inventory {
       String[] itemPair = rows.split(":");
       String foundItem = "";
       boolean itemFoundInRow = false;
+      if(itemPair.length < 2){
+        //empty container
+        continue;
+      }
       for (String item : itemPair[1].split(",")) {
         if (item.toLowerCase(Locale.ROOT)
             .contains(query.toLowerCase(Locale.ROOT))) {

@@ -8,11 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ObsidianRepository implements OrganizerRepository {
 
-  private String organizerLocation;
+  private final String organizerLocation;
   private final static String ITEM_LOCATION_FILENAME = "ItemLocation.md";
   private final static String CONTAINER_LOCATION_FILENAME = "ContainerLocation.md";
   private final static String TODO_LIST_FILENAME = "Todo.md";
@@ -68,5 +67,15 @@ public class ObsidianRepository implements OrganizerRepository {
     } catch (IOException e) {
       throw new OrganizerRepositoryException("Failed to write to file: " + path, e);
     }
+  }
+
+  @Override
+  public void addOrganizerInventory(String item, String location) {
+
+  }
+
+  @Override
+  public void deleteOrganizerInventory(String item, String location) {
+
   }
 }

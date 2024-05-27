@@ -1,10 +1,9 @@
 package com.nguyen.server;
 
-import com.nguyen.server.interfaces.OrganizerRepositoryWrite;
+import com.nguyen.server.interfaces.OrganizerRepository;
 import com.nguyen.server.obsidian.ObsidianRepository;
 import com.nguyen.server.resources.InventoryResource;
 import com.nguyen.server.services.Inventory;
-import com.nguyen.server.interfaces.OrganizerRepositoryRead;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
@@ -25,10 +24,9 @@ public class OrganizerServerApplication extends Application<OrganizerServerConfi
   @Override
   public void run(final OrganizerServerConfiguration configuration,
       final Environment environment) {
-    OrganizerRepositoryRead organizerRepositoryRead = new ObsidianRepository(configuration.getObsidianOrganizerVaultLocation());
-    OrganizerRepositoryWrite organizerRepositoryWrite = null;
+    OrganizerRepository organizerRepository = new ObsidianRepository(configuration.getObsidianOrganizerVaultLocation());
 
-    Inventory inventory = new Inventory(organizerRepositoryRead, organizerRepositoryWrite);
+    Inventory inventory = new Inventory(organizerRepository);
     final InventoryResource inventoryResource = new InventoryResource(inventory);
     environment.jersey().register(inventoryResource);
   }
