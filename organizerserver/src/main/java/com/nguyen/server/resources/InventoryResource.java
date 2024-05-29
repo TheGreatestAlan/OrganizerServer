@@ -28,6 +28,18 @@ public class InventoryResource {
   }
 
   @GET
+  @Path("/item/container/{containerId}")
+  public Response getContainerItems(@PathParam("containerId") String containerId) {
+    List<String> items = inventory.getContainerById(containerId);
+    if (items.isEmpty()) {
+      return Response.status(Response.Status.NOT_FOUND)
+          .entity("Container not found or is empty.")
+          .build();
+    }
+    return buildResponse(items);
+  }
+
+  @GET
   @Path("/container/{containerId}")
   public Response findContainer(@PathParam("containerId") String containerId) {
     return buildResponse(inventory.findContainerLocation(containerId));
@@ -36,7 +48,8 @@ public class InventoryResource {
   @POST
   @Path("/items")
   public Response createItems(ItemContainerRequest request) {
-    if (request.getContainer() == null || request.getItems() == null || request.getItems().isEmpty()) {
+    if (request.getContainer() == null || request.getItems() == null || request.getItems()
+        .isEmpty()) {
       return Response.status(Response.Status.BAD_REQUEST)
           .entity("Container identifier and items list must not be empty.")
           .build();

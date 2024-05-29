@@ -1,5 +1,6 @@
 package com.nguyen.server.obsidian;
 
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +25,7 @@ public class ObsidianRepositoryTest {
   public void getOrganizerInventory() throws IOException {
     List<String> expectedItems = Files.readAllLines(
         Path.of(ORGANIZER_LOCATION + "\\ItemLocation.md"));
-    List<String> actualItems = obsidianRepository.getOrganizerInventory();
+    Map<String, List<String>> actualItems = obsidianRepository.getOrganizerInventory();
 
     assertEquals(expectedItems, actualItems);
   }

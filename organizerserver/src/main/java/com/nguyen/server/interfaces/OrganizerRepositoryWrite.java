@@ -1,9 +1,15 @@
 package com.nguyen.server.interfaces;
 
-public interface OrganizerRepositoryWrite {
-    void addOrganizerInventory(String item, String location);
+import java.util.List;
+import java.util.Map;
 
-    void deleteOrganizerInventory(String item, String location);
+public interface OrganizerRepositoryWrite {
+
+  void saveOrganizerInventory(Map<String, List<String>> inventory);
+
+  void addOrganizerInventory(String item, String location);
+
+  void deleteOrganizerInventory(String item, String location);
 
 
 }

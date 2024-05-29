@@ -2,131 +2,149 @@ package com.nguyen.server.services;
 
 import com.nguyen.server.RateLimitException;
 import com.nguyen.server.interfaces.OrganizerRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Inventory {
 
   OrganizerRepository organizerRepository;
-  List<String> cachedOrganizerInventory;
+  Map<String, List<String>> cachedOrganizerInventory;
   List<String> cachedContainerLocation;
 
   public Inventory(OrganizerRepository organizerRepository) {
-    cachedOrganizerInventory = organizerRepository.getOrganizerInventory();
-    cachedContainerLocation = organizerRepository.getContainerLocation();
     this.organizerRepository = organizerRepository;
+    this.cachedOrganizerInventory = sortOrganizerInventory(
+        organizerRepository.getOrganizerInventory());
+    this.cachedContainerLocation = organizerRepository.getContainerLocation();
   }
 
-  public List<String> getOrganizerInventory() {
-    try {
-      cachedOrganizerInventory = organizerRepository.getOrganizerInventory();
-      return cachedOrganizerInventory;
-    } catch (RateLimitException e) {
-      return cachedOrganizerInventory;
+  private Map<String, List<String>> sortOrganizerInventory(Map<String, List<String>> inventory) {
+    Map<String, List<String>> sortedInventory = new LinkedHashMap<>();
+
+    inventory.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey(new CustomKeyComparator()))
+        .forEachOrdered(entry -> sortedInventory.put(entry.getKey(), entry.getValue()));
+
+    return sortedInventory;
+  }
+
+  private static class CustomKeyComparator implements Comparator<String> {
+
+    @Override
+    public int compare(String key1, String key2) {
+      try {
+        int num1 = Integer.parseInt(key1);
+        int num2 = Integer.parseInt(key2);
+        return Integer.compare(num1, num2);
+      } catch (NumberFormatException e) {
+        if (key1.matches("\\d+") && !key2.matches("\\d+")) {
+          return -1;
+        } else if (!key1.matches("\\d+") && key2.matches("\\d+")) {
+          return 1;
+        } else {
+          return key1.compareTo(key2);
+        }
+      }
     }
   }
 
+  public Map<String, List<String>> getOrganizerInventory() {
+    return cachedOrganizerInventory;
+  }
+
+  private List<String> convertInventoryMapToList(Map<String, List<String>> inventoryMap) {
+    List<String> inventoryList = new ArrayList<>();
+    for (Map.Entry<String, List<String>> entry : inventoryMap.entrySet()) {
+      String containerId = entry.getKey();
+      String items = String.join(",", entry.getValue());
+      inventoryList.add(containerId + ":" + items);
+    }
+    return inventoryList;
+  }
 
   public List<String> getContainerLocation() {
     try {
       cachedContainerLocation = organizerRepository.getContainerLocation();
-      return cachedContainerLocation;
     } catch (RateLimitException e) {
-      return cachedContainerLocation;
+      // Return the cached version in case of a rate limit exception
     }
+    return cachedContainerLocation;
   }
 
   public List<String> findItem(String itemName) {
-    return findFromRepoTable(itemName, getOrganizerInventory());
-  }
-
-  public List<String> findContainerLocation(String containerId) {
-    return findFromRepoTable(containerId, getContainerLocation());
-  }
-
-  public List<String> findFromRepoTable(String query, List<String> repoTable) {
     List<String> results = new ArrayList<>();
-    for (String rows : repoTable) {
-      if (rows.startsWith("#") || rows.isBlank() || rows.isEmpty()) {
-        continue;
-      }
-      String[] itemPair = rows.split(":");
-      String foundItem = "";
-      boolean itemFoundInRow = false;
-      if(itemPair.length < 2){
-        //empty container
-        continue;
-      }
-      for (String item : itemPair[1].split(",")) {
-        if (item.toLowerCase(Locale.ROOT)
-            .contains(query.toLowerCase(Locale.ROOT))) {
-          if (!itemFoundInRow) {
-            foundItem = itemPair[0] + ":";
-          }
-          itemFoundInRow = true;
-          foundItem += item + ",";
-        }
-      }
-      if (itemFoundInRow) {
-        results.add(foundItem.substring(0, foundItem.length() - 1));
+    String query = itemName.toLowerCase(Locale.ROOT);
+
+    for (Map.Entry<String, List<String>> entry : cachedOrganizerInventory.entrySet()) {
+      String containerId = entry.getKey();
+      List<String> items = entry.getValue();
+      List<String> matchingItems = items.stream()
+          .map(String::trim)
+          .filter(item -> item.toLowerCase(Locale.ROOT).contains(query))
+          .collect(Collectors.toList());
+      if (!matchingItems.isEmpty()) {
+        results.add(containerId + ":" + String.join(",", matchingItems));
       }
     }
+
     return results;
   }
 
+  public List<String> getContainerById(String containerId) {
+    return cachedOrganizerInventory.getOrDefault(containerId.trim(), Collections.emptyList());
+  }
+
+  public List<String> findContainerLocation(String containerId) {
+    String query = containerId.toLowerCase(Locale.ROOT);
+    return cachedContainerLocation.stream()
+        .filter(location -> location.toLowerCase(Locale.ROOT).contains(query))
+        .collect(Collectors.toList());
+  }
+
   public boolean createItemsInContainer(String containerId, List<String> items) {
-    List<String> updatedInventory = new ArrayList<>();
+    containerId = containerId.trim();
+    items = items.stream().map(String::trim).collect(Collectors.toList());
     boolean updated = false;
-    for (String row : cachedOrganizerInventory) {
-      String[] itemPair = row.split(":");
-      if (itemPair[0].trim().equals(containerId.trim())) {
-        String existingItems = itemPair[1];
-        String newItemString = items.stream()
-            .map(String::trim)
-            .collect(Collectors.joining(","));
-        updatedInventory.add(
-            itemPair[0] + ":" + existingItems + (existingItems.isEmpty() ? "" : ",")
-                + newItemString);
-        updated = true;
-      } else {
-        updatedInventory.add(row);
-      }
+
+    if (cachedOrganizerInventory.containsKey(containerId)) {
+      List<String> existingItems = cachedOrganizerInventory.get(containerId);
+      existingItems.addAll(items);
+      cachedOrganizerInventory.put(containerId, existingItems);
+      updated = true;
+    } else {
+      cachedOrganizerInventory.put(containerId, new ArrayList<>(items));
+      updated = true;
     }
+
     if (updated) {
-      cachedOrganizerInventory = updatedInventory;
       organizerRepository.saveOrganizerInventory(cachedOrganizerInventory);
     }
+
     return updated;
   }
 
-
   public boolean deleteItemsFromContainer(String containerId, List<String> itemsToDelete) {
-    List<String> updatedInventory = new ArrayList<>();
+    containerId = containerId.trim();
     itemsToDelete = itemsToDelete.stream().map(String::trim).collect(Collectors.toList());
     boolean updated = false;
-    for (String row : cachedOrganizerInventory) {
-      String[] itemPair = row.split(":");
-      if (itemPair[0].trim().equals(containerId.trim())) {
-        List<String> items = new ArrayList<>(List.of(itemPair[1].split(",")));
-        List<String> updatedItems = new ArrayList<>();
-        for (String item : items) {
-          if (!itemsToDelete.contains(item.trim())) {
-            updatedItems.add(item.trim());
-            updated = true;
-          }
-        }
-        if (updated) { // Only update if items were actually removed
-          row = itemPair[0] + ":" + String.join(",", updatedItems);
-        }
+
+    if (cachedOrganizerInventory.containsKey(containerId)) {
+      List<String> items = cachedOrganizerInventory.get(containerId);
+      List<String> finalItemsToDelete = itemsToDelete;
+      List<String> updatedItems = items.stream()
+          .filter(item -> !finalItemsToDelete.contains(item))
+          .collect(Collectors.toList());
+      if (updatedItems.size() != items.size()) {
+        cachedOrganizerInventory.put(containerId, updatedItems);
+        updated = true;
       }
-      updatedInventory.add(row);
     }
+
     if (updated) {
-      cachedOrganizerInventory = updatedInventory;
       organizerRepository.saveOrganizerInventory(cachedOrganizerInventory);
     }
-    return updated; // return whether the operation modified the inventory
+
+    return updated;
   }
 }
