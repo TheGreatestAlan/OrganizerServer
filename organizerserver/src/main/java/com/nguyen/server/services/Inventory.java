@@ -126,14 +126,17 @@ public class Inventory {
 
   public boolean deleteItemsFromContainer(String containerId, List<String> itemsToDelete) {
     containerId = containerId.trim();
-    itemsToDelete = itemsToDelete.stream().map(String::trim).collect(Collectors.toList());
+    itemsToDelete = itemsToDelete.stream()
+        .map(String::trim)
+        .map(String::toLowerCase)
+        .collect(Collectors.toList());
     boolean updated = false;
 
     if (cachedOrganizerInventory.containsKey(containerId)) {
       List<String> items = cachedOrganizerInventory.get(containerId);
       List<String> finalItemsToDelete = itemsToDelete;
       List<String> updatedItems = items.stream()
-          .filter(item -> !finalItemsToDelete.contains(item))
+          .filter(item -> !finalItemsToDelete.contains(item.trim().toLowerCase()))
           .collect(Collectors.toList());
       if (updatedItems.size() != items.size()) {
         cachedOrganizerInventory.put(containerId, updatedItems);
