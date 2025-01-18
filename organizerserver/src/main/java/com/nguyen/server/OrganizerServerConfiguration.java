@@ -9,6 +9,8 @@ public class OrganizerServerConfiguration extends Configuration {
 
   @NotEmpty
   private String obsidianOrganizerVaultLocation;
+  @NotEmpty
+  private String noteBaseLocation;
 
   @JsonProperty
   public String getObsidianOrganizerVaultLocation() {
@@ -18,5 +20,14 @@ public class OrganizerServerConfiguration extends Configuration {
   @JsonProperty
   public void setObsidianOrganizerVaultLocation(String obsidianOrganizerVaultLocation) {
     this.obsidianOrganizerVaultLocation = obsidianOrganizerVaultLocation;
+  }
+  @JsonProperty
+  public String getNoteBaseLocation() {
+    return noteBaseLocation;
+  }
+
+  @JsonProperty
+  public void setNoteBaseLocation(String noteBaseLocation) {
+    this.noteBaseLocation = noteBaseLocation;
   }
 }

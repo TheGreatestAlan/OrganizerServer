@@ -1,37 +1,60 @@
 @echo off
-REM Ensure Docker is running
-docker --version >nul 2>&1
-if %ERRORLEVEL% neq 0 (
-    echo Docker is not running or not installed. Please start Docker.
-    exit /b 1
-)
+setlocal enabledelayedexpansion
 
-REM Define variables
-set IMAGE_NAME=happydance/organizerserver
-set TAG=latest
+REM Define the relative path to the directory containing your .env files
+set "ENV_DIR=..\dev"
 
-REM Change to the directory containing your Dockerfile (if needed)
-REM Uncomment and modify the line below if your Dockerfile is in a different directory
-REM cd path\to\your\dockerfile
+REM Get the absolute path of the ENV_DIR
+for %%i in ("%ENV_DIR%") do set ABS_ENV_DIR=%%~fi
 
-REM Build the Docker image
-echo Building the Docker image: %IMAGE_NAME%:%TAG%
+REM Define the path to the .env file provided as the first argument
+set ENV_FILE=%ABS_ENV_DIR%\docker-compose.env
+
+REM Change to the directory where the docker-compose.yml is located (one level above)
 cd ..
-docker build -t %IMAGE_NAME%:%TAG% .
 
-if %ERRORLEVEL% neq 0 (
-    echo Failed to build the Docker image.
-    exit /b 1
+REM Load the specified .env file and set environment variables
+for /f "usebackq delims=" %%i in ("%ENV_FILE%") do set %%i
+
+@echo off
+
+:: Set the path to your docker-compose.yml file
+set DOCKER_COMPOSE_FILE=../docker-compose.yml
+
+:: Get a list of all services defined in the docker-compose file and extract image names
+for /f "tokens=*" %%i in ('docker-compose -f %DOCKER_COMPOSE_FILE% config | findstr "image"') do (
+    set IMAGE_LINE=%%i
+
+    REM Extract the image name
+    for /f "tokens=2 delims=:" %%j in ("!IMAGE_LINE!") do (
+        set IMAGE_NAME=%%j
+
+        REM Get the local image hash (digest)
+        for /f "tokens=*" %%k in ('docker inspect --format="{{index .RepoDigests 0}}" %IMAGE_NAME%') do (
+            set LOCAL_DIGEST=%%k
+
+            REM Get the remote image digest from Docker Hub using the Docker CLI
+            for /f "tokens=*" %%l in ('docker manifest inspect %IMAGE_NAME% --verbose ^| findstr "Digest"') do (
+                set REMOTE_DIGEST=%%l
+            )
+
+            REM Compare the local and remote digests
+            if "!LOCAL_DIGEST!" neq "!REMOTE_DIGEST!" (
+                echo Image !IMAGE_NAME! is different from Docker Hub version, updating...
+
+                REM Remove the old local image
+                docker rmi %IMAGE_NAME%
+
+                REM Pull the new image from Docker Hub
+                docker pull %IMAGE_NAME%
+            ) else (
+                echo Image !IMAGE_NAME! is up to date.
+            )
+        )
+    )
 )
 
-REM Push the Docker image to Docker Hub
-echo Pushing the Docker image to Docker Hub...
-docker push %IMAGE_NAME%:%TAG%
+:: Optionally clean up unused images
+docker image prune -f
 
-if %ERRORLEVEL% neq 0 (
-    echo Failed to push the Docker image to Docker Hub.
-    exit /b 1
-)
-
-echo Docker image successfully built and pushed to %IMAGE_NAME%:%TAG%
-pause
+endlocal

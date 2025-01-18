@@ -1,1 +1,2 @@
 obsidianOrganizerVaultLocation: ${OBSIDIAN_VAULT_REPO_LOCATION:-default_value}
+noteBaseLocation: ${NOTE_BASE_LOCATION:-default_value}
