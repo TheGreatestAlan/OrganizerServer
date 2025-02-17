@@ -12,6 +12,15 @@ public class OrganizerServerConfiguration extends Configuration {
   @NotEmpty
   private String noteBaseLocation;
 
+  @NotEmpty
+  private String baseGitRepoLocation;
+
+  @NotEmpty
+  private String gitToken;
+
+  @NotEmpty
+  private String gitUser;
+
   @JsonProperty
   public String getObsidianOrganizerVaultLocation() {
     return obsidianOrganizerVaultLocation;
@@ -29,5 +38,34 @@ public class OrganizerServerConfiguration extends Configuration {
   @JsonProperty
   public void setNoteBaseLocation(String noteBaseLocation) {
     this.noteBaseLocation = noteBaseLocation;
+  }
+  @JsonProperty
+  public String getBaseGitRepoLocation() {
+    return baseGitRepoLocation;
+  }
+
+  @JsonProperty
+  public void setBaseGitRepoLocation(String baseGitRepoLocation) {
+    this.baseGitRepoLocation = baseGitRepoLocation;
+  }
+
+  @JsonProperty
+  public String getGitToken() {
+    return gitToken;
+  }
+
+  @JsonProperty
+  public void setGitToken(String gitToken) {
+    this.gitToken = gitToken;
+  }
+
+  @JsonProperty
+  public String getGitUser() {
+    return gitUser;
+  }
+
+  @JsonProperty
+  public void setGitUser(String gitUser) {
+    this.gitUser = gitUser;
   }
 }

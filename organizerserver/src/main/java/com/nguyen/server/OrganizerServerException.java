@@ -6,6 +6,10 @@ public class OrganizerServerException extends RuntimeException {
     super(e);
   }
 
+  public OrganizerServerException(String message){
+    super(message);
+  }
+
   public OrganizerServerException(String message, Throwable e) {
     super(message, e);
   }

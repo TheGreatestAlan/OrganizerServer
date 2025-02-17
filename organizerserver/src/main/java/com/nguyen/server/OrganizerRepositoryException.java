@@ -6,6 +6,10 @@ public class OrganizerRepositoryException extends OrganizerServerException {
     super(e);
   }
 
+  public OrganizerRepositoryException(String message) {
+    super(message);
+  }
+
   public OrganizerRepositoryException(String message, Throwable e) {
     super(message, e);
   }

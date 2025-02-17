@@ -1,4 +1,4 @@
-package com.nguyen.server.obsidian;
+package com.nguyen.server.repository;
 
 import com.nguyen.server.OrganizerRepositoryException;
 import com.nguyen.server.interfaces.OrganizerRepository;
@@ -10,14 +10,14 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ObsidianRepository implements OrganizerRepository {
+public class FileSystemRepository implements OrganizerRepository {
 
   private final String organizerLocation;
   private final static String ITEM_LOCATION_FILENAME = "ItemLocation.md";
   private final static String CONTAINER_LOCATION_FILENAME = "ContainerLocation.md";
   private final static String TODO_LIST_FILENAME = "Todo.md";
 
-  public ObsidianRepository(String location) {
+  public FileSystemRepository(String location) {
     this.organizerLocation = location;
   }
 

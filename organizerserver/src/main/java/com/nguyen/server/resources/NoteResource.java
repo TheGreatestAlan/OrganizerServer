@@ -1,11 +1,9 @@
 package com.nguyen.server.resources;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nguyen.server.interfaces.NoteRepository;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Optional;
@@ -47,21 +45,16 @@ public class NoteResource {
         }
     }
 
-    /**
-     * Searches for notes containing the specified keyword.
-     *
-     * @param keyword The keyword to search for.
-     * @return A JSON response containing the matching notes.
-     */
-    @GET
+    @POST
     @Path("/search")
-    public Response searchNotes(@QueryParam("keyword") String keyword) {
+    @Consumes("application/json")
+    public Response searchNotes(NotesSearchRequest request) {
         try {
-            if (keyword == null || keyword.isEmpty()) {
+            if (request == null || request.getKeyword() == null || request.getKeyword().isEmpty()) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .entity("Keyword is required for searching").build();
             }
-            return Response.ok(noteRepository.searchNotes(keyword).stream()
+            return Response.ok(noteRepository.searchNotes(request.getKeyword()).stream()
                             .map(NoteDto::from)
                             .collect(Collectors.toList()))
                     .build();
@@ -86,4 +79,5 @@ public class NoteResource {
                     .entity("Error fetching note titles").build();
         }
     }
+
 }

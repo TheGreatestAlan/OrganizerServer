@@ -1,4 +1,4 @@
-package com.nguyen.server.obsidian;
+package com.nguyen.server.repository;
 
 import com.nguyen.server.interfaces.Note;
 import org.junit.jupiter.api.*;
