@@ -4,6 +4,7 @@ import com.nguyen.server.interfaces.NoteRepository;
 import com.nguyen.server.interfaces.OrganizerRepository;
 import com.nguyen.server.repository.FileSystemNoteRepository;
 import com.nguyen.server.repository.FileSystemRepository;
+import com.nguyen.server.repository.GitFileSystemNoteRepositoryDecorator;
 import com.nguyen.server.repository.GitFileSystemRepositoryDecorator;
 import com.nguyen.server.resources.InventoryResource;
 import com.nguyen.server.resources.NoteResource;
@@ -31,7 +32,9 @@ public class OrganizerServerApplication extends Application<OrganizerServerConfi
     OrganizerRepository organizerRepository = new GitFileSystemRepositoryDecorator(
             new FileSystemRepository(configuration.getObsidianOrganizerVaultLocation()),
             configuration.getBaseGitRepoLocation(), configuration.getGitUser(), configuration.getGitToken());
-    NoteRepository noteRepository = new FileSystemNoteRepository(configuration.getNoteBaseLocation());
+    NoteRepository noteRepository = new GitFileSystemNoteRepositoryDecorator(
+            new FileSystemNoteRepository(configuration.getNoteBaseLocation()),
+    configuration.getBaseGitRepoLocation(), configuration.getGitUser(), configuration.getGitToken());
 
     Inventory inventory = new Inventory(organizerRepository);
     final InventoryResource inventoryResource = new InventoryResource(inventory);
