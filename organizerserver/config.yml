@@ -1,5 +1,0 @@
-logging:
-  level: INFO
-  loggers:
-    com: DEBUG
-obsidianOrganizerVaultLocation: ${OBSIDIAN_ORGANIZER_LOCATION:-default}
