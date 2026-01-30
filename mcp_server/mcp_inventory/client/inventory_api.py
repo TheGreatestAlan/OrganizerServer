@@ -8,8 +8,8 @@ import json
 import os
 from typing import Any, Dict, List, Optional
 
-from agent_server.integrations.InventoryRestClient import InventoryClient
-from agent_server.FunctionResponse import Status
+from mcp_inventory.dependencies.InventoryRestClient import InventoryClient
+from mcp_inventory.dependencies.FunctionResponse import Status
 
 
 class InventoryAPIError(Exception):
