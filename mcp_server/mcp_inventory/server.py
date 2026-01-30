@@ -45,8 +45,8 @@ logger = logging.getLogger(__name__)
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from mcp.server.fastmcp import FastMCP, Context
-from agent_server.mcp_inventory.tools.items import create_items, delete_items
-from agent_server.mcp_inventory.tools.queries import (
+from mcp_inventory.tools.items import create_items, delete_items
+from mcp_inventory.tools.queries import (
     get_inventory,
     get_container,
     find_location,

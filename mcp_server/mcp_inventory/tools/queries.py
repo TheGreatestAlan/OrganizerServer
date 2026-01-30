@@ -7,7 +7,7 @@ from typing import Optional
 
 from mcp.server.fastmcp import Context
 
-from agent_server.mcp_inventory.client.inventory_api import (
+from mcp_inventory.client.inventory_api import (
     get_inventory_client,
     InventoryAPIError,
 )

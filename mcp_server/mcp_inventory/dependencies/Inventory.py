@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from agent_server.FunctionResponse import FunctionResponse
+from mcp_inventory.dependencies.FunctionResponse import FunctionResponse
 
 
 class Inventory(ABC):
