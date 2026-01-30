@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "inventory": {
+      "command": "bash",
+      "args": [
+        "-c",
+        "cd /home/alan/workspace/OrganizerServer/organizerserver/mcp_server && source venv/bin/activate && export PYTHONPATH=/home/alan/workspace/OrganizerServer/organizerserver/mcp_server && export INVENTORY_API_BASE_URL=http://localhost:39805 && exec python3 -m mcp_inventory.server"
+      ]
+    }
+  }
+}
