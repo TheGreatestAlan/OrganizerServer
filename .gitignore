@@ -8,3 +8,4 @@ target/
 *Thingy
 *.xml
 *~
+mcp_server/venv/
