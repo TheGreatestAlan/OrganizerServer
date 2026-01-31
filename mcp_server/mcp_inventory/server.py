@@ -28,6 +28,7 @@ Usage:
 
 import argparse
 import asyncio
+import hmac
 import logging
 import os
 import sys
@@ -52,6 +53,7 @@ from mcp_inventory.tools.queries import (
     find_location,
     get_containers,
 )
+from starlette.responses import PlainTextResponse
 
 # Create MCP server instance
 mcp = FastMCP("inventory")
@@ -264,6 +266,49 @@ def get_inventory_api_url() -> Optional[str]:
     return os.getenv("INVENTORY_API_BASE_URL") or os.getenv("ORGANIZER_SERVER_URL")
 
 
+def get_mcp_api_key() -> Optional[str]:
+    """Get MCP API key for SSE auth."""
+    return os.getenv("MCP_API_KEY")
+
+
+def extract_bearer_token(auth_header: str | None) -> Optional[str]:
+    """Extract bearer token from an Authorization header."""
+    if not auth_header:
+        return None
+    parts = auth_header.split()
+    if len(parts) != 2:
+        return None
+    if parts[0].lower() != "bearer":
+        return None
+    return parts[1]
+
+
+def is_authorized(auth_header: str | None, api_key: str) -> bool:
+    """Validate Authorization header against the configured API key."""
+    token = extract_bearer_token(auth_header)
+    if not token:
+        return False
+    return hmac.compare_digest(token, api_key)
+
+
+class ApiKeyAuthMiddleware:
+    """Simple ASGI middleware enforcing Bearer API key auth."""
+
+    def __init__(self, app, api_key: str):
+        self.app = app
+        self.api_key = api_key
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") == "http":
+            headers = {k.decode().lower(): v.decode() for k, v in scope.get("headers", [])}
+            if not is_authorized(headers.get("authorization"), self.api_key):
+                response = PlainTextResponse("Unauthorized", status_code=401)
+                response.headers["WWW-Authenticate"] = "Bearer"
+                await response(scope, receive, send)
+                return
+        await self.app(scope, receive, send)
+
+
 def validate_environment():
     """Validate that required environment variables are set."""
     api_url = get_inventory_api_url()
@@ -319,6 +364,10 @@ Examples:
 
     # Validate environment
     validate_environment()
+    api_key = get_mcp_api_key() if args.transport == "sse" else None
+    if args.transport == "sse" and not api_key:
+        logger.error("MCP_API_KEY must be set for SSE transport.")
+        sys.exit(1)
 
     # Log startup info
     logger.info(f"Starting MCP Inventory Server")
@@ -333,8 +382,19 @@ Examples:
             # Run with stdio transport (default for Claude Desktop)
             mcp.run(transport="stdio")
         else:
-            # Run with SSE transport
-            mcp.run(transport="sse", host=args.host, port=args.port)
+            # Run with SSE transport + API key auth
+            import uvicorn
+
+            sse_app = mcp.sse_app()
+            authed_app = ApiKeyAuthMiddleware(sse_app, api_key)
+            config = uvicorn.Config(
+                authed_app,
+                host=args.host,
+                port=args.port,
+                log_level="info",
+            )
+            server = uvicorn.Server(config)
+            server.run()
     except KeyboardInterrupt:
         logger.info("Shutting down...")
     except Exception as e:

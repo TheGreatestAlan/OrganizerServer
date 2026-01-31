@@ -9,3 +9,7 @@ target/
 *.xml
 *~
 mcp_server/venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

@@ -39,3 +39,18 @@ java -jar target/organizerserver-1.0-SNAPSHOT.jar server config.yml
 cd mcp_server
 ./run_tests.sh
 ```
+
+### Production (SSE + API Key)
+
+When running in the production container, the MCP server uses SSE transport and
+requires a bearer API key on every request.
+
+Required environment variables for the container:
+
+- `MCP_TRANSPORT=sse`
+- `MCP_PORT=3000`
+- `MCP_API_KEY=...` (required for SSE)
+- `INVENTORY_API_BASE_URL=http://localhost:8080`
+
+The container entrypoint starts both the Java server and MCP server and exits
+if either process stops.

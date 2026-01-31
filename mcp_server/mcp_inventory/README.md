@@ -337,10 +337,10 @@ If you get import errors like "ModuleNotFoundError: No module named 'mcp_invento
 ## Security Considerations
 
 - The MCP server uses stdio transport for Claude Desktop (local only)
-- SSE transport should only be used on trusted networks
-- No authentication is built into the MCP server itself
-- Relies on Java API's security mechanisms
-- Environment variables should not contain sensitive credentials
+- SSE transport is intended for controlled environments
+- SSE transport enforces `Authorization: Bearer <MCP_API_KEY>` when `MCP_API_KEY` is set
+- Relies on Java API's security mechanisms for inventory operations
+- Environment variables should not contain sensitive credentials unless required
 
 ## License
 
