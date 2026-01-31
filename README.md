@@ -49,7 +49,7 @@ Required environment variables for the container:
 
 - `MCP_TRANSPORT=sse`
 - `MCP_PORT=3000`
-- `MCP_API_KEY=...` (required for SSE)
+- `MCP_API_KEY=...` (required for SSE unless OAuth is enabled)
 - `INVENTORY_API_BASE_URL=http://localhost:8080`
 
 Optional security settings (recommended in production):
@@ -57,6 +57,14 @@ Optional security settings (recommended in production):
 - `MCP_DNS_REBINDING_PROTECTION=true`
 - `MCP_ALLOWED_HOSTS=alanhoangnguyen.com,www.alanhoangnguyen.com`
 - `MCP_ALLOWED_ORIGINS=https://alanhoangnguyen.com,https://www.alanhoangnguyen.com`
+
+Optional OAuth settings (enable API key OR OAuth):
+
+- `MCP_OAUTH_ENABLED=true`
+- `MCP_OAUTH_ISSUER=https://alanhoangnguyen.com/oauth/realms/mcp`
+- `MCP_OAUTH_AUDIENCE=https://alanhoangnguyen.com/mcp`
+- `MCP_OAUTH_JWKS_URL=` (optional; defaults to Keycloak JWKS under issuer)
+- `MCP_OAUTH_SCOPES=inventory:read,inventory:write`
 
 The container entrypoint starts both the Java server and MCP server and exits
 if either process stops.

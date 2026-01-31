@@ -340,6 +340,7 @@ If you get import errors like "ModuleNotFoundError: No module named 'mcp_invento
 - SSE transport is intended for controlled environments
 - SSE transport enforces `Authorization: Bearer <MCP_API_KEY>` when `MCP_API_KEY` is set
 - DNS rebinding protection can be enabled with `MCP_DNS_REBINDING_PROTECTION=true` and host/origin allowlists
+- OAuth tokens are accepted when `MCP_OAUTH_ENABLED=true` and validated against the configured issuer/audience
 - Relies on Java API's security mechanisms for inventory operations
 - Environment variables should not contain sensitive credentials unless required
 

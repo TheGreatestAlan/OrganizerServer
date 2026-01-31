@@ -16,13 +16,20 @@ Target service: `organizerserver`
 Add MCP env vars (values shown are required defaults):
 - `MCP_TRANSPORT=sse`
 - `MCP_PORT=3000`
-- `MCP_API_KEY=...` (must be set in the prod env file)
+- `MCP_API_KEY=...` (required unless OAuth is enabled)
 - `INVENTORY_API_BASE_URL=http://localhost:8080`
 
 Optional (recommended) DNS rebinding protection:
 - `MCP_DNS_REBINDING_PROTECTION=true`
 - `MCP_ALLOWED_HOSTS=alanhoangnguyen.com,www.alanhoangnguyen.com`
 - `MCP_ALLOWED_ORIGINS=https://alanhoangnguyen.com,https://www.alanhoangnguyen.com`
+
+Optional OAuth (API key OR OAuth bearer token accepted):
+- `MCP_OAUTH_ENABLED=true`
+- `MCP_OAUTH_ISSUER=https://alanhoangnguyen.com/oauth/realms/mcp`
+- `MCP_OAUTH_AUDIENCE=https://alanhoangnguyen.com/mcp`
+- `MCP_OAUTH_JWKS_URL=` (optional; defaults to Keycloak JWKS under issuer)
+- `MCP_OAUTH_SCOPES=inventory:read,inventory:write`
 
 3) Restart policy
 - `restart: unless-stopped`

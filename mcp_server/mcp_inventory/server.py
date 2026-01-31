@@ -55,6 +55,8 @@ from mcp_inventory.tools.queries import (
     get_containers,
 )
 from starlette.responses import PlainTextResponse
+import jwt
+from jwt import PyJWKClient
 
 def parse_bool_env(value: str | None, default: bool = False) -> bool:
     if value is None:
@@ -77,6 +79,86 @@ def build_transport_security() -> TransportSecuritySettings:
         allowed_hosts=allowed_hosts,
         allowed_origins=allowed_origins,
     )
+
+def oauth_enabled() -> bool:
+    return parse_bool_env(os.getenv("MCP_OAUTH_ENABLED"), default=False)
+
+
+def get_oauth_issuer() -> Optional[str]:
+    return os.getenv("MCP_OAUTH_ISSUER")
+
+
+def get_oauth_audience() -> Optional[str]:
+    return os.getenv("MCP_OAUTH_AUDIENCE")
+
+
+def get_oauth_jwks_url() -> Optional[str]:
+    return os.getenv("MCP_OAUTH_JWKS_URL")
+
+
+def get_oauth_scopes() -> list[str]:
+    scopes = parse_csv_env(os.getenv("MCP_OAUTH_SCOPES"))
+    if scopes:
+        return scopes
+    return ["inventory:read", "inventory:write"]
+
+
+_jwks_client: PyJWKClient | None = None
+
+
+def get_jwks_client() -> PyJWKClient:
+    global _jwks_client
+    if _jwks_client is None:
+        jwks_url = get_oauth_jwks_url()
+        if not jwks_url:
+            issuer = get_oauth_issuer()
+            if not issuer:
+                raise ValueError("MCP_OAUTH_ISSUER is required when MCP_OAUTH_ENABLED is true.")
+            jwks_url = issuer.rstrip("/") + "/protocol/openid-connect/certs"
+        _jwks_client = PyJWKClient(jwks_url)
+    return _jwks_client
+
+
+def extract_scopes(claims: dict) -> set[str]:
+    scope_str = claims.get("scope") or ""
+    if isinstance(scope_str, str):
+        scopes = scope_str.split()
+    else:
+        scopes = []
+    scp = claims.get("scp") or []
+    if isinstance(scp, list):
+        scopes.extend([s for s in scp if isinstance(s, str)])
+    return set(scopes)
+
+
+def validate_oauth_token(token: str) -> bool:
+    if not oauth_enabled():
+        return False
+    issuer = get_oauth_issuer()
+    audience = get_oauth_audience()
+    if not issuer or not audience:
+        logger.error("MCP_OAUTH_ISSUER and MCP_OAUTH_AUDIENCE must be set when MCP_OAUTH_ENABLED is true.")
+        return False
+    try:
+        jwks_client = get_jwks_client()
+        signing_key = jwks_client.get_signing_key_from_jwt(token)
+        claims = jwt.decode(
+            token,
+            signing_key.key,
+            algorithms=["RS256"],
+            audience=audience,
+            issuer=issuer,
+        )
+        required_scopes = set(get_oauth_scopes())
+        if required_scopes:
+            token_scopes = extract_scopes(claims)
+            if not token_scopes.intersection(required_scopes):
+                logger.warning("OAuth token missing required scopes.")
+                return False
+        return True
+    except Exception as exc:
+        logger.warning(f"OAuth token validation failed: {exc}")
+        return False
 
 
 # Create MCP server instance
@@ -312,18 +394,20 @@ def extract_bearer_token(auth_header: str | None) -> Optional[str]:
     return parts[1]
 
 
-def is_authorized(auth_header: str | None, api_key: str) -> bool:
-    """Validate Authorization header against the configured API key."""
+def is_authorized(auth_header: str | None, api_key: str | None) -> bool:
+    """Validate Authorization header against API key or OAuth token."""
     token = extract_bearer_token(auth_header)
     if not token:
         return False
-    return hmac.compare_digest(token, api_key)
+    if api_key and hmac.compare_digest(token, api_key):
+        return True
+    return validate_oauth_token(token)
 
 
 class ApiKeyAuthMiddleware:
-    """Simple ASGI middleware enforcing Bearer API key auth."""
+    """ASGI middleware enforcing Bearer API key or OAuth token auth."""
 
-    def __init__(self, app, api_key: str):
+    def __init__(self, app, api_key: str | None):
         self.app = app
         self.api_key = api_key
 
@@ -394,9 +478,13 @@ Examples:
     # Validate environment
     validate_environment()
     api_key = get_mcp_api_key() if args.transport == "sse" else None
-    if args.transport == "sse" and not api_key:
-        logger.error("MCP_API_KEY must be set for SSE transport.")
+    if args.transport == "sse" and not api_key and not oauth_enabled():
+        logger.error("MCP_API_KEY must be set for SSE transport (or enable OAuth).")
         sys.exit(1)
+    if args.transport == "sse" and oauth_enabled():
+        if not get_oauth_issuer() or not get_oauth_audience():
+            logger.error("MCP_OAUTH_ISSUER and MCP_OAUTH_AUDIENCE are required when MCP_OAUTH_ENABLED is true.")
+            sys.exit(1)
     if args.transport == "sse":
         security = mcp.settings.transport_security
         if security and security.enable_dns_rebinding_protection and not security.allowed_hosts:
