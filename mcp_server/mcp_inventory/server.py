@@ -46,6 +46,7 @@ logger = logging.getLogger(__name__)
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from mcp.server.fastmcp import FastMCP, Context
+from mcp.server.transport_security import TransportSecuritySettings
 from mcp_inventory.tools.items import create_items, delete_items
 from mcp_inventory.tools.queries import (
     get_inventory,
@@ -55,8 +56,36 @@ from mcp_inventory.tools.queries import (
 )
 from starlette.responses import PlainTextResponse
 
+def parse_bool_env(value: str | None, default: bool = False) -> bool:
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "y", "on"}
+
+
+def parse_csv_env(value: str | None) -> list[str]:
+    if not value:
+        return []
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def build_transport_security() -> TransportSecuritySettings:
+    enable = parse_bool_env(os.getenv("MCP_DNS_REBINDING_PROTECTION"), default=False)
+    allowed_hosts = parse_csv_env(os.getenv("MCP_ALLOWED_HOSTS"))
+    allowed_origins = parse_csv_env(os.getenv("MCP_ALLOWED_ORIGINS"))
+    return TransportSecuritySettings(
+        enable_dns_rebinding_protection=enable,
+        allowed_hosts=allowed_hosts,
+        allowed_origins=allowed_origins,
+    )
+
+
 # Create MCP server instance
-mcp = FastMCP("inventory")
+mcp = FastMCP(
+    "inventory",
+    host=os.getenv("MCP_HOST", "0.0.0.0"),
+    port=int(os.getenv("MCP_PORT", "3000")),
+    transport_security=build_transport_security(),
+)
 
 
 # Register query tools (read-only)
@@ -368,6 +397,13 @@ Examples:
     if args.transport == "sse" and not api_key:
         logger.error("MCP_API_KEY must be set for SSE transport.")
         sys.exit(1)
+    if args.transport == "sse":
+        security = mcp.settings.transport_security
+        if security and security.enable_dns_rebinding_protection and not security.allowed_hosts:
+            logger.error(
+                "MCP_DNS_REBINDING_PROTECTION is enabled but MCP_ALLOWED_HOSTS is empty."
+            )
+            sys.exit(1)
 
     # Log startup info
     logger.info(f"Starting MCP Inventory Server")

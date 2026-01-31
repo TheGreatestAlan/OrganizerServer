@@ -52,5 +52,11 @@ Required environment variables for the container:
 - `MCP_API_KEY=...` (required for SSE)
 - `INVENTORY_API_BASE_URL=http://localhost:8080`
 
+Optional security settings (recommended in production):
+
+- `MCP_DNS_REBINDING_PROTECTION=true`
+- `MCP_ALLOWED_HOSTS=alanhoangnguyen.com,www.alanhoangnguyen.com`
+- `MCP_ALLOWED_ORIGINS=https://alanhoangnguyen.com,https://www.alanhoangnguyen.com`
+
 The container entrypoint starts both the Java server and MCP server and exits
 if either process stops.
