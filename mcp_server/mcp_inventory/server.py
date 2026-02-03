@@ -11,15 +11,18 @@ This server provides tools for:
 Environment Variables:
     INVENTORY_API_BASE_URL: Java Inventory API base URL
     ORGANIZER_SERVER_URL: Alternative env var for API URL (fallback)
-    MCP_TRANSPORT: Transport type - 'stdio' (default) or 'sse'
-    MCP_PORT: Port for SSE transport (default: 3000)
-    MCP_HOST: Host for SSE transport (default: 0.0.0.0)
+    MCP_TRANSPORT: Transport type - 'stdio' (default), 'streamable-http', or 'sse'
+    MCP_PORT: Port for HTTP transports (default: 3000)
+    MCP_HOST: Host for HTTP transports (default: 0.0.0.0)
 
 Usage:
     # Run with stdio transport (for Claude Desktop)
     python -m agent_server.mcp_inventory.server
 
-    # Run with SSE transport (for remote access)
+    # Run with Streamable HTTP transport (for remote access - recommended)
+    python -m agent_server.mcp_inventory.server --transport streamable-http --port 3000
+
+    # Run with SSE transport (legacy)
     python -m agent_server.mcp_inventory.server --transport sse --port 3000
 
     # Using the module directly
@@ -443,21 +446,24 @@ def main():
 Environment Variables:
   INVENTORY_API_BASE_URL  Java Inventory API base URL
   ORGANIZER_SERVER_URL    Alternative API URL (fallback)
-  MCP_TRANSPORT           Transport type: 'stdio' (default) or 'sse'
-  MCP_PORT                Port for SSE transport (default: 3000)
-  MCP_HOST                Host for SSE transport (default: 0.0.0.0)
+  MCP_TRANSPORT           Transport type: 'stdio' (default), 'streamable-http', or 'sse'
+  MCP_PORT                Port for HTTP transports (default: 3000)
+  MCP_HOST                Host for HTTP transports (default: 0.0.0.0)
 
 Examples:
   # Run with stdio transport (for Claude Desktop)
   python -m agent_server.mcp_inventory.server
 
-  # Run with SSE transport
+  # Run with Streamable HTTP transport (recommended for remote)
+  python -m agent_server.mcp_inventory.server --transport streamable-http --port 3000
+
+  # Run with SSE transport (legacy)
   python -m agent_server.mcp_inventory.server --transport sse --port 3000
         """
     )
     parser.add_argument(
         "--transport",
-        choices=["stdio", "sse"],
+        choices=["stdio", "streamable-http", "sse"],
         default=os.getenv("MCP_TRANSPORT", "stdio"),
         help="Transport type (default: stdio)"
     )
@@ -477,15 +483,18 @@ Examples:
 
     # Validate environment
     validate_environment()
-    api_key = get_mcp_api_key() if args.transport == "sse" else None
-    if args.transport == "sse" and not api_key and not oauth_enabled():
-        logger.error("MCP_API_KEY must be set for SSE transport (or enable OAuth).")
+    # Both SSE and Streamable HTTP transports require auth (API key or OAuth)
+    http_transports = ["sse", "streamable-http"]
+    is_http_transport = args.transport in http_transports
+    api_key = get_mcp_api_key() if is_http_transport else None
+    if is_http_transport and not api_key and not oauth_enabled():
+        logger.error(f"MCP_API_KEY must be set for {args.transport} transport (or enable OAuth).")
         sys.exit(1)
-    if args.transport == "sse" and oauth_enabled():
+    if is_http_transport and oauth_enabled():
         if not get_oauth_issuer() or not get_oauth_audience():
             logger.error("MCP_OAUTH_ISSUER and MCP_OAUTH_AUDIENCE are required when MCP_OAUTH_ENABLED is true.")
             sys.exit(1)
-    if args.transport == "sse":
+    if is_http_transport:
         security = mcp.settings.transport_security
         if security and security.enable_dns_rebinding_protection and not security.allowed_hosts:
             logger.error(
@@ -497,7 +506,7 @@ Examples:
     logger.info(f"Starting MCP Inventory Server")
     logger.info(f"Transport: {args.transport}")
 
-    if args.transport == "sse":
+    if is_http_transport:
         logger.info(f"Host: {args.host}")
         logger.info(f"Port: {args.port}")
 
@@ -505,10 +514,20 @@ Examples:
         if args.transport == "stdio":
             # Run with stdio transport (default for Claude Desktop)
             mcp.run(transport="stdio")
+        elif args.transport == "streamable-http":
+            # Run with Streamable HTTP transport (recommended for remote access)
+            # FastMCP handles auth via transport_security settings
+            # Host/port are set via env vars or FastMCP constructor, not run()
+            logger.info("Starting Streamable HTTP transport on /mcp endpoint")
+            mcp.run(
+                transport="streamable-http",
+                mount_path="/mcp"
+            )
         else:
-            # Run with SSE transport + API key auth
+            # Run with SSE transport + API key auth (legacy)
             import uvicorn
 
+            logger.info("Starting SSE transport (legacy) - consider migrating to streamable-http")
             sse_app = mcp.sse_app()
             authed_app = ApiKeyAuthMiddleware(sse_app, api_key)
             config = uvicorn.Config(

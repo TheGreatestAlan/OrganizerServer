@@ -61,7 +61,7 @@ docker run -d \
   -e BASE_GIT_REPO_LOCATION= \
   -e GIT_USER= \
   -e GIT_TOKEN= \
-  -e MCP_TRANSPORT=sse \
+  -e MCP_TRANSPORT=streamable-http \
   -e MCP_PORT=3000 \
   -e MCP_API_KEY="${MCP_API_KEY}" \
   -e INVENTORY_API_BASE_URL="http://localhost:8080" \
@@ -71,5 +71,5 @@ docker run -d \
 echo "Organizer Server running:"
 echo "  App:   http://localhost:${APP_PORT}"
 echo "  Admin: http://localhost:${ADMIN_PORT}"
-echo "  MCP:   http://localhost:${MCP_HOST_PORT}/sse"
+echo "  MCP:   http://localhost:${MCP_HOST_PORT}/mcp"
 echo "  MCP_API_KEY: ${MCP_API_KEY}"

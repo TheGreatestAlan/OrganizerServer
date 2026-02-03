@@ -31,7 +31,7 @@ log "Starting OrganizerServer (Java)..."
 JAVA_PID=$!
 
 log "Starting MCP server..."
-python3 -m mcp_inventory.server --transport "${MCP_TRANSPORT:-sse}" --port "${MCP_PORT:-3000}" --host "${MCP_HOST:-0.0.0.0}" &
+python3 -m mcp_inventory.server --transport "${MCP_TRANSPORT:-streamable-http}" --port "${MCP_PORT:-3000}" --host "${MCP_HOST:-0.0.0.0}" &
 MCP_PID=$!
 
 log "OrganizerServer PID: ${JAVA_PID}"
