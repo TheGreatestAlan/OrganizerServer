@@ -12,6 +12,7 @@ RUN mvn -q -DskipTests package
 #
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /usr/local/lib
+VOLUME ["/data"]
 RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-pip \
   && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /workspace/target/organizerserver-1.0-SNAPSHOT.jar /usr/local/lib/organizer.jar
