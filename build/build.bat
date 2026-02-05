@@ -4,5 +4,4 @@ cd %SCRIPT_DIR%
 
 cd ..
 if not exist artifact mkdir artifact
-docker build --rm . -t builder
-
+docker build --rm . -t organizer-server

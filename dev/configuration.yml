@@ -1,5 +1,6 @@
-obsidianOrganizerVaultLocation: ${OBSIDIAN_VAULT_REPO_LOCATION:-default_value}
-noteBaseLocation: ${NOTE_BASE_LOCATION:-default_value}
-baseGitRepoLocation: ${BASE_GIT_REPO_LOCATION:-default_value}
-gitToken: ${GIT_TOKEN-default_value}
-gitUser: ${GIT_USER-default_value}
+obsidianOrganizerVaultLocation: ${OBSIDIAN_VAULT_REPO_LOCATION}
+noteBaseLocation: ${NOTE_BASE_LOCATION}
+baseGitRepoLocation: ${BASE_GIT_REPO_LOCATION}
+gitToken: ${GIT_TOKEN}
+gitUser: ${GIT_USER}
+gitSyncEnabled: ${GIT_SYNC_ENABLED}

@@ -2,8 +2,9 @@ logging:
   level: INFO
   loggers:
     com: DEBUG
-obsidianOrganizerVaultLocation: ${OBSIDIAN_VAULT_REPO_LOCATION:-/home/alan/organizer/vault}
-noteBaseLocation: ${NOTE_BASE_LOCATION:-/home/alan/organizer/notes}
-baseGitRepoLocation: ${BASE_GIT_REPO_LOCATION:-/home/alan/organizer/git}
-gitToken: ${GIT_TOKEN:-dummy_token}
-gitUser: ${GIT_USER:-dummy_user}
+obsidianOrganizerVaultLocation: ${OBSIDIAN_VAULT_REPO_LOCATION}
+noteBaseLocation: ${NOTE_BASE_LOCATION}
+baseGitRepoLocation: ${BASE_GIT_REPO_LOCATION}
+gitToken: ${GIT_TOKEN}
+gitUser: ${GIT_USER}
+gitSyncEnabled: ${GIT_SYNC_ENABLED}
