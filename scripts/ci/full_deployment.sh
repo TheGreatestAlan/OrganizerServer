@@ -165,12 +165,16 @@ else
     echo "Creating backup: $BACKUP_NAME"
 
     # Capture current version on production
-    PREVIOUS_VERSION=$(ssh "$PROD_SERVER" "docker compose -f ${PROD_DEPLOY_DIR}/${PROD_COMPOSE_FILE} exec -T ${SERVICE_NAME} curl -fsS http://localhost:8081/healthcheck 2>/dev/null | grep -o 'version[^,]*' || echo 'unknown'" 2>/dev/null || echo "unknown")
+    PREVIOUS_VERSION=$(ssh "$PROD_SERVER" "cd ${PROD_DEPLOY_DIR} && if [ -f dev/docker-compose.env ]; then set -a && source dev/docker-compose.env && set +a; fi && docker compose -f ${PROD_DEPLOY_DIR}/${PROD_COMPOSE_FILE} exec -T ${SERVICE_NAME} curl -fsS http://localhost:8081/healthcheck 2>/dev/null | grep -o 'version[^,]*' || echo 'unknown'" 2>/dev/null || echo "unknown")
 
     echo "Current production version: $PREVIOUS_VERSION"
 
     # Backup H2 database if it exists
     ssh "$PROD_SERVER" "
+        cd ${PROD_DEPLOY_DIR}
+        if [ -f dev/docker-compose.env ]; then
+            set -a && source dev/docker-compose.env && set +a
+        fi
         if [ -f ${PROD_DATA_DIR}/db/inventory.db.mv.db ]; then
             mkdir -p ${PROD_DATA_DIR}/backups
             cp ${PROD_DATA_DIR}/db/inventory.db.mv.db ${PROD_DATA_DIR}/backups/inventory-${BACKUP_NAME}.mv.db
@@ -193,6 +197,10 @@ if [ "$SKIP_MIGRATION" = "true" ]; then
 else
     # Check if legacy data exists and H2 database doesn't
     MIGRATION_NEEDED=$(ssh "$PROD_SERVER" "
+        cd ${PROD_DEPLOY_DIR}
+        if [ -f dev/docker-compose.env ]; then
+            set -a && source dev/docker-compose.env && set +a
+        fi
         if [ -f /data/legacy/ItemLocation.md ] && [ ! -f ${PROD_DATA_DIR}/db/inventory.db.mv.db ]; then
             echo 'MIGRATION_NEEDED'
         else
@@ -263,7 +271,7 @@ else
     VERIFIED=false
 
     for i in $(seq 1 $MAX_RETRIES); do
-        RESPONSE=$(ssh "$PROD_SERVER" "docker compose -f ${PROD_DEPLOY_DIR}/${PROD_COMPOSE_FILE} exec -T ${SERVICE_NAME} curl -fsS http://localhost:8080/inventory" 2>/dev/null || echo "")
+        RESPONSE=$(ssh "$PROD_SERVER" "cd ${PROD_DEPLOY_DIR} && if [ -f dev/docker-compose.env ]; then set -a && source dev/docker-compose.env && set +a; fi && docker compose -f ${PROD_DEPLOY_DIR}/${PROD_COMPOSE_FILE} exec -T ${SERVICE_NAME} curl -fsS http://localhost:8080/inventory" 2>/dev/null || echo "")
 
         if [ -n "$RESPONSE" ]; then
             echo "Service responding on attempt $i"

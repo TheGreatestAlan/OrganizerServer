@@ -37,14 +37,16 @@ ssh "${REMOTE_HOST}" <<EOF_REMOTE
 set -euo pipefail
 cd "${REMOTE_DIR}"
 
+# Source production environment variables
+if [ -f "dev/docker-compose.env" ]; then
+  echo "Loading environment from dev/docker-compose.env..."
+  set -a
+  source dev/docker-compose.env
+  set +a
+fi
+
 # Ensure data directory exists with proper permissions
 mkdir -p "${DATA_DIR}/db"
-
-# Update environment file to set DATABASE_URL for H2
-docker run --rm \
-    --entrypoint "" \
-    alpine:latest \
-    sh -c "echo 'DATABASE_URL=jdbc:h2:file:/data/inventory.db;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1' >> /data/.env" 2>/dev/null || true
 
 # Pull and deploy
 echo "Pulling image version ${VERSION}..."
