@@ -33,17 +33,15 @@ echo ""
 echo "[1/2] Deploying to production..."
 echo "------------------------------------------------------"
 
+# Export all environment variables from the env file to SSH session
+ENV_EXPORT=$(ssh "${REMOTE_HOST}" "cat ${REMOTE_DIR}/dev/docker-compose.env 2>/dev/null | grep -v '^#' | grep -v '^$' | sed 's/^/export /'" 2>/dev/null || echo "")
+
 ssh "${REMOTE_HOST}" <<EOF_REMOTE
 set -euo pipefail
 cd "${REMOTE_DIR}"
 
-# Source production environment variables
-if [ -f "dev/docker-compose.env" ]; then
-  echo "Loading environment from dev/docker-compose.env..."
-  set -a
-  source dev/docker-compose.env
-  set +a
-fi
+# Export all environment variables
+${ENV_EXPORT}
 
 # Ensure data directory exists with proper permissions
 mkdir -p "${DATA_DIR}/db"
