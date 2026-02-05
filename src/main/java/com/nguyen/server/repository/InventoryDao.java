@@ -24,7 +24,7 @@ public interface InventoryDao {
             "container_id VARCHAR(255) NOT NULL, " +
             "quantity INT DEFAULT 1, " +
             "FOREIGN KEY (container_id) REFERENCES containers(id) ON DELETE CASCADE, " +
-            "UNIQUE KEY unique_item_in_container (name, container_id))")
+            "CONSTRAINT unique_item_in_container UNIQUE (name, container_id))")
     void createItemsTable();
 
     @SqlUpdate("CREATE INDEX IF NOT EXISTS idx_items_name ON items(name)")
