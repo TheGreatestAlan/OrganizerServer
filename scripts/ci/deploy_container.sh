@@ -33,25 +33,21 @@ echo ""
 echo "[1/2] Deploying to production..."
 echo "------------------------------------------------------"
 
-# Export all environment variables from the env file to SSH session
-ENV_EXPORT=$(ssh "${REMOTE_HOST}" "cat ${REMOTE_DIR}/dev/docker-compose.env 2>/dev/null | grep -v '^#' | grep -v '^$' | sed 's/^/export /'" 2>/dev/null || echo "")
-
 ssh "${REMOTE_HOST}" <<EOF_REMOTE
 set -euo pipefail
 cd "${REMOTE_DIR}"
 
-# Export all environment variables
-${ENV_EXPORT}
-
 # Ensure data directory exists with proper permissions
 mkdir -p "${DATA_DIR}/db"
 
-# Pull and deploy
+# Pull and deploy using env file
+export ORGANIZER_VERSION="${VERSION}"
+
 echo "Pulling image version ${VERSION}..."
-ORGANIZER_VERSION="${VERSION}" docker compose -f "${COMPOSE_FILE}" pull "${SERVICE_NAME}"
+docker compose --env-file dev/docker-compose.env -f "${COMPOSE_FILE}" pull "${SERVICE_NAME}"
 
 echo "Starting container..."
-ORGANIZER_VERSION="${VERSION}" docker compose -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate "${SERVICE_NAME}"
+docker compose --env-file dev/docker-compose.env -f "${COMPOSE_FILE}" up -d --no-deps --force-recreate "${SERVICE_NAME}"
 
 echo "Container started"
 EOF_REMOTE
@@ -74,10 +70,7 @@ VERIFIED=false
 for i in $(seq 1 $HEALTH_RETRIES); do
     sleep $HEALTH_DELAY
 
-    HEALTH_STATUS=$(ssh "$REMOTE_HOST" "
-        docker compose -f ${REMOTE_DIR}/${COMPOSE_FILE} exec -T ${SERVICE_NAME} \
-        curl -fsS http://localhost:8081/healthcheck 2>/dev/null || echo 'unhealthy'
-    " 2>/dev/null || echo "unhealthy")
+    HEALTH_STATUS=$(ssh "$REMOTE_HOST" "cd ${REMOTE_DIR} && docker compose --env-file dev/docker-compose.env -f ${COMPOSE_FILE} exec -T ${SERVICE_NAME} curl -fsS http://localhost:8081/healthcheck 2>/dev/null || echo 'unhealthy'" 2>/dev/null || echo "unhealthy")
 
     if [ "$HEALTH_STATUS" != "unhealthy" ]; then
         echo "Health check passed on attempt $i"
