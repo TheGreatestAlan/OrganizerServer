@@ -1,6 +1,9 @@
-obsidianOrganizerVaultLocation: ${OBSIDIAN_VAULT_REPO_LOCATION}
-noteBaseLocation: ${NOTE_BASE_LOCATION}
-baseGitRepoLocation: ${BASE_GIT_REPO_LOCATION}
-gitToken: ${GIT_TOKEN}
-gitUser: ${GIT_USER}
-gitSyncEnabled: ${GIT_SYNC_ENABLED}
+server:
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
+
+databaseUrl: ${DATABASE_URL:-jdbc:h2:file:/data/inventory.db;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1}
