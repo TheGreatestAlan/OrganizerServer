@@ -397,14 +397,46 @@ def extract_bearer_token(auth_header: str | None) -> Optional[str]:
     return parts[1]
 
 
+def mask_api_key(key: str | None, visible_chars: int = 12) -> str:
+    """Mask an API key for safe logging.
+
+    Shows first N characters followed by ellipsis.
+    Returns '<not set>' if key is None.
+    """
+    if not key:
+        return "<not set>"
+    if len(key) <= visible_chars:
+        return "***"
+    return f"{key[:visible_chars]}..."
+
+
 def is_authorized(auth_header: str | None, api_key: str | None) -> bool:
-    """Validate Authorization header against API key or OAuth token."""
+    """Validate Authorization header against API key or OAuth token.
+
+    Supports:
+    1. Bearer sk-organizer-... (API key - new format)
+    2. Bearer <any-plain-key> (API key - backward compatible)
+    3. Bearer eyJ... (JWT OAuth token)
+    """
     token = extract_bearer_token(auth_header)
     if not token:
         return False
-    if api_key and hmac.compare_digest(token, api_key):
-        return True
-    return validate_oauth_token(token)
+
+    # Case 1: API key (sk- prefix or plain)
+    if api_key:
+        # Support both sk- prefixed keys and legacy plain keys
+        if hmac.compare_digest(token, api_key):
+            return True
+        # Log safe version if key doesn't match (for debugging)
+        if token.startswith("sk-"):
+            safe_token = token[:16] + "..." if len(token) > 16 else token
+            logger.warning(f"Invalid sk- format API key attempt: {safe_token}")
+
+    # Case 2: JWT token (eyJ prefix - base64 encoded JWT)
+    if token.startswith("eyJ"):
+        return validate_oauth_token(token)
+
+    return False
 
 
 class ApiKeyAuthMiddleware:
@@ -516,13 +548,20 @@ Examples:
             mcp.run(transport="stdio")
         elif args.transport == "streamable-http":
             # Run with Streamable HTTP transport (recommended for remote access)
-            # FastMCP handles auth via transport_security settings
-            # Host/port are set via env vars or FastMCP constructor, not run()
+            # Apply API key auth middleware
+            import uvicorn
+
             logger.info("Starting Streamable HTTP transport on /mcp endpoint")
-            mcp.run(
-                transport="streamable-http",
-                mount_path="/mcp"
+            http_app = mcp.streamable_http_app()
+            authed_app = ApiKeyAuthMiddleware(http_app, api_key)
+            config = uvicorn.Config(
+                authed_app,
+                host=args.host,
+                port=args.port,
+                log_level="info",
             )
+            server = uvicorn.Server(config)
+            server.run()
         else:
             # Run with SSE transport + API key auth (legacy)
             import uvicorn

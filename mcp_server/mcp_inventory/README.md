@@ -136,6 +136,55 @@ Claude will automatically use dry-run mode when appropriate, but you can request
 - "Show me what would happen if I added 5 hammers to the toolbox"
 - "Preview removing the nails from the garage"
 
+## Bearer Token Authentication (OpenWebUI)
+
+For OpenWebUI and other clients that don't support OAuth 2.1 Dynamic Client Registration:
+
+### Generating an API Key
+
+Generate a secure API key with the `sk-organizer-` prefix:
+
+```bash
+openssl rand -hex 32 | xargs -I {} echo "sk-organizer-{}"
+```
+
+This produces a high-entropy key like:
+`sk-organizer-a3f7c9d2e8b115f6c4d9e2a7b5f8c1d3e6a9b2c5d8e1f4a7b0c3d6e9f2a5b8`
+
+### OpenWebUI Configuration
+
+1. Go to **Admin Panel > Tools > Add Tool Server**
+2. Configure:
+   - **URL:** `https://alanhoangnguyen.com/mcp/organizer`
+   - **Auth Type:** `bearer`
+   - **Key:** `sk-organizer-your-api-key-here`
+3. Click "Verify Connection" to test
+
+### Testing with curl
+
+```bash
+curl -s -X POST "https://alanhoangnguyen.com/mcp/organizer" \
+  -H "Authorization: Bearer sk-organizer-your-api-key" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2024-11-05",
+      "capabilities": {},
+      "clientInfo": {"name": "test", "version": "1.0"}
+    }
+  }'
+```
+
+### Backward Compatibility
+
+The server also accepts:
+- Legacy plain API keys (for existing integrations)
+- OAuth 2.1 tokens (JWT format with `eyJ` prefix)
+
 ## Running the Server
 
 ### Using the Helper Script (Recommended)
