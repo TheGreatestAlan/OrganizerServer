@@ -18,7 +18,7 @@ This MCP server provides natural language access to the Java Inventory API, allo
 
 ## Features
 
-- **7 Registered Tools**: Complete inventory management through MCP protocol
+- **9 Registered Tools**: Complete inventory management through MCP protocol
 - **Natural Language Interface**: Conversational interaction through Claude Desktop
 - **Direct API Integration**: No intermediate LLM parsing (lower latency, lower cost)
 - **Dry-Run Mode**: Preview changes before executing mutating operations
@@ -42,6 +42,8 @@ This MCP server provides natural language access to the Java Inventory API, allo
 |------|-------------|
 | `inventory_create_items` | Add items to a container (supports dry_run) |
 | `inventory_delete_items` | Remove items from a container (supports dry_run) |
+| `inventory_create_container` | Create a new empty container (supports dry_run) |
+| `inventory_rename_container` | Rename a container and/or update its description (supports dry_run) |
 
 ### Meta Tool
 
