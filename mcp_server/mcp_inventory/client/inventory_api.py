@@ -293,10 +293,14 @@ class MCPInventoryClient:
             "item_count" (items that would move) or "not_found".
         """
         if dry_run:
-            try:
-                current = self.get_container(container_id)
-                item_count = len(current.get("contents", []))
-            except InventoryAPIError:
+            # First check if container exists (get_container returns 404 for both
+            # "not found" and "empty container", so we disambiguate via get_containers)
+            containers = self.get_containers()
+            container_exists = any(
+                c.get("id") == container_id or c.get("name") == container_id
+                for c in containers
+            )
+            if not container_exists:
                 return {
                     "dry_run": True,
                     "container_id": container_id,
@@ -305,6 +309,13 @@ class MCPInventoryClient:
                     "not_found": True,
                     "message": f"Container '{container_id}' not found."
                 }
+            # Container exists — get its item count (may be 0 for empty containers)
+            try:
+                current = self.get_container(container_id)
+                item_count = len(current.get("contents", []))
+            except InventoryAPIError:
+                # Container exists but API returned 404 (empty container case)
+                item_count = 0
             return {
                 "dry_run": True,
                 "container_id": container_id,

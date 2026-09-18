@@ -80,6 +80,9 @@ class TestMCPInventoryClientContainers:
 
     def test_rename_container_dry_run_reports_item_count(self):
         client = make_client()
+        # Mock get_inventory for the existence check in dry-run
+        client._client.get_inventory.return_value = FunctionResponse(
+            Status.SUCCESS, '{"old": ["hammer", "wrench"]}')
         client._client.get_container.return_value = FunctionResponse(
             Status.SUCCESS, '["hammer", "wrench"]')
 
@@ -91,8 +94,9 @@ class TestMCPInventoryClientContainers:
 
     def test_rename_container_dry_run_missing_source(self):
         client = make_client()
-        client._client.get_container.return_value = FunctionResponse(
-            Status.FAILURE, "Error 404: Container not found or is empty.")
+        # Mock get_inventory to return empty list (container doesn't exist)
+        client._client.get_inventory.return_value = FunctionResponse(
+            Status.SUCCESS, '{}')
 
         result = client.rename_container("missing", new_name="new", dry_run=True)
 
