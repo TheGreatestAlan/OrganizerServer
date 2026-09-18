@@ -56,6 +56,11 @@ class InventoryClient(Inventory):
             response = requests.request(method, url, **kwargs)
             response.raise_for_status()  # Raise for HTTP errors (200-299)
             return self.map_to_function_response(response)
+        except requests.exceptions.HTTPError as err:
+            # 4xx/5xx: surface the server's response body via the mapper
+            if err.response is not None:
+                return self.map_to_function_response(err.response)
+            return FunctionResponse(Status.FAILURE, f"Request error: {err}")
         except requests.exceptions.RequestException as err:  # Catch all request errors
             error_msg = f"Request error: {err}"
             return FunctionResponse(Status.FAILURE, error_msg)
