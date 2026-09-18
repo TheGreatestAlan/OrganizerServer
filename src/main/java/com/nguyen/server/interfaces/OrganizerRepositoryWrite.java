@@ -11,5 +11,8 @@ public interface OrganizerRepositoryWrite {
 
   void deleteOrganizerInventory(String item, String location);
 
+  void createContainer(String containerId, String locationDescription);
+
+  boolean renameContainer(String oldId, String newId, String locationDescription);
 
 }

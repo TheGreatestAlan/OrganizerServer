@@ -50,6 +50,9 @@ public interface InventoryDao {
     @SqlUpdate("DELETE FROM containers WHERE id = :id")
     void deleteContainer(@Bind("id") String id);
 
+    @SqlUpdate("UPDATE items SET container_id = :newId WHERE container_id = :oldId")
+    void moveItemsToContainer(@Bind("oldId") String oldId, @Bind("newId") String newId);
+
     @SqlQuery("SELECT id, name, container_id, quantity FROM items WHERE container_id = :containerId")
     @RegisterBeanMapper(Item.class)
     List<Item> findItemsByContainer(@Bind("containerId") String containerId);

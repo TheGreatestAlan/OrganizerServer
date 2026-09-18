@@ -105,4 +105,67 @@ class H2InventoryRepositoryTest {
         List<String> todos = repository.getTodoList();
         assertTrue(todos.isEmpty());
     }
+
+    @Test
+    void testContainerExists() {
+        assertFalse(repository.containerExists("A"));
+        repository.createContainer("A", "top shelf");
+        assertTrue(repository.containerExists("A"));
+    }
+
+    @Test
+    void testCreateContainerWithDescriptionAppearsInLocations() {
+        repository.createContainer("A", "top shelf");
+
+        List<String> locations = repository.getContainerLocation();
+
+        assertTrue(locations.contains("A: top shelf"));
+    }
+
+    @Test
+    void testRenameContainerMovesItems() {
+        repository.addOrganizerInventory("Cumin", "1", 3);
+
+        boolean result = repository.renameContainer("1", "2", null);
+
+        assertTrue(result);
+        assertFalse(repository.containerExists("1"));
+        assertTrue(repository.containerExists("2"));
+        assertTrue(repository.getContainerById("1").isEmpty());
+        assertEquals(List.of("Cumin (x3)"), repository.getContainerById("2"));
+    }
+
+    @Test
+    void testRenameContainerPreservesDescriptionWhenNoneSupplied() {
+        repository.createContainer("A", "top shelf");
+
+        repository.renameContainer("A", "B", null);
+
+        assertTrue(repository.getContainerLocation().contains("B: top shelf"));
+    }
+
+    @Test
+    void testRenameContainerAppliesNewDescription() {
+        repository.createContainer("A", "top shelf");
+
+        repository.renameContainer("A", "B", "bottom shelf");
+
+        assertTrue(repository.getContainerLocation().contains("B: bottom shelf"));
+    }
+
+    @Test
+    void testRenameContainerDescriptionOnly() {
+        repository.createContainer("A", "top shelf");
+
+        boolean result = repository.renameContainer("A", "A", "updated shelf");
+
+        assertTrue(result);
+        assertTrue(repository.containerExists("A"));
+        assertTrue(repository.getContainerLocation().contains("A: updated shelf"));
+    }
+
+    @Test
+    void testRenameContainerNonexistentReturnsFalse() {
+        assertFalse(repository.renameContainer("missing", "x", null));
+    }
 }

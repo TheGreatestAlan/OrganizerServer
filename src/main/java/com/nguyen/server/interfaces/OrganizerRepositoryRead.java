@@ -12,4 +12,6 @@ public interface OrganizerRepositoryRead {
   List<String> getContainerLocation();
 
   List<String> getContainerById(String containerId);
+
+  boolean containerExists(String containerId);
 }

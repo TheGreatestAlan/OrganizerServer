@@ -178,4 +178,38 @@ public class H2InventoryRepository implements com.nguyen.server.interfaces.Organ
             }
         });
     }
+
+    @Override
+    public boolean containerExists(String containerId) {
+        return jdbi.withExtension(InventoryDao.class,
+                dao -> dao.findContainerById(containerId).isPresent());
+    }
+
+    @Override
+    public void createContainer(String containerId, String locationDescription) {
+        jdbi.useExtension(InventoryDao.class,
+                dao -> dao.insertContainer(new Container(containerId, locationDescription)));
+    }
+
+    @Override
+    public boolean renameContainer(String oldId, String newId, String locationDescription) {
+        return jdbi.inTransaction(handle -> {
+            InventoryDao dao = handle.attach(InventoryDao.class);
+            Optional<Container> existing = dao.findContainerById(oldId);
+            if (existing.isEmpty()) {
+                return false;
+            }
+            String effectiveDescription = (locationDescription != null)
+                    ? locationDescription
+                    : existing.get().getLocationDescription();
+            if (newId == null || newId.equals(oldId)) {
+                dao.updateContainer(new Container(oldId, effectiveDescription));
+                return true;
+            }
+            dao.insertContainer(new Container(newId, effectiveDescription));
+            dao.moveItemsToContainer(oldId, newId);
+            dao.deleteContainer(oldId);
+            return true;
+        });
+    }
 }
