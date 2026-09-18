@@ -23,3 +23,11 @@ class Inventory(ABC):
     @abstractmethod
     def delete_items(self, container: str, items: list) -> FunctionResponse:
         pass
+
+    @abstractmethod
+    def create_container(self, name: str, description: str = None) -> FunctionResponse:
+        pass
+
+    @abstractmethod
+    def rename_container(self, container_id: str, new_name: str = None, description: str = None) -> FunctionResponse:
+        pass

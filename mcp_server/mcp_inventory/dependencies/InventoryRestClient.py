@@ -51,6 +51,16 @@ class InventoryClient(Inventory):
         data = {"container": container, "items": items}
         return self._make_request('DELETE', url, json=data)
 
+    def create_container(self, container, description=None) -> FunctionResponse:
+        url = f"{self.base_url}/inventory/container"
+        data = {"id": container, "locationDescription": description}
+        return self._make_request('POST', url, json=data)
+
+    def rename_container(self, container_id, new_name=None, description=None) -> FunctionResponse:
+        url = f"{self.base_url}/inventory/container/{container_id}"
+        data = {"newId": new_name, "locationDescription": description}
+        return self._make_request('PUT', url, json=data)
+
     def _make_request(self, method, url, **kwargs) -> FunctionResponse:
         try:
             response = requests.request(method, url, **kwargs)

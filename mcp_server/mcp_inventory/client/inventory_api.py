@@ -235,6 +235,88 @@ class MCPInventoryClient:
 
         return normalized
 
+    def create_container(
+        self,
+        name: str,
+        description: Optional[str] = None,
+        dry_run: bool = False
+    ) -> Dict[str, Any]:
+        """Create a new empty container.
+
+        Args:
+            name: Container ID or name
+            description: Optional location description
+            dry_run: If True, preview without executing
+
+        Returns:
+            Dictionary with operation result; dry-run results include a
+            "conflict" flag when the name is already taken.
+        """
+        if dry_run:
+            containers = self.get_containers()
+            conflict = any(
+                c.get("id") == name or c.get("name") == name
+                for c in containers
+            )
+            return {
+                "dry_run": True,
+                "container": name,
+                "description": description,
+                "conflict": conflict,
+                "message": (
+                    f"Container '{name}' already exists."
+                    if conflict
+                    else f"Would create container '{name}'"
+                )
+            }
+
+        response = self._client.create_container(name, description)
+        return self._handle_response(response)
+
+    def rename_container(
+        self,
+        container_id: str,
+        new_name: Optional[str] = None,
+        description: Optional[str] = None,
+        dry_run: bool = False
+    ) -> Dict[str, Any]:
+        """Rename a container and/or update its location description.
+
+        Args:
+            container_id: Current container ID or name
+            new_name: New ID or name (omit for description-only update)
+            description: New location description (omit to keep current)
+            dry_run: If True, preview without executing
+
+        Returns:
+            Dictionary with operation result; dry-run results include
+            "item_count" (items that would move) or "not_found".
+        """
+        if dry_run:
+            try:
+                current = self.get_container(container_id)
+                item_count = len(current.get("contents", []))
+            except InventoryAPIError:
+                return {
+                    "dry_run": True,
+                    "container_id": container_id,
+                    "new_name": new_name,
+                    "description": description,
+                    "not_found": True,
+                    "message": f"Container '{container_id}' not found."
+                }
+            return {
+                "dry_run": True,
+                "container_id": container_id,
+                "new_name": new_name,
+                "description": description,
+                "item_count": item_count,
+                "message": f"Would move {item_count} item(s) to '{new_name or container_id}'"
+            }
+
+        response = self._client.rename_container(container_id, new_name, description)
+        return self._handle_response(response)
+
 
 # Singleton instance for reuse
 _client_instance: Optional[MCPInventoryClient] = None
