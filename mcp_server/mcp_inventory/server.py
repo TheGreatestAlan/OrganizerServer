@@ -51,6 +51,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from mcp.server.fastmcp import FastMCP, Context
 from mcp.server.transport_security import TransportSecuritySettings
 from mcp_inventory.tools.items import create_items, delete_items
+from mcp_inventory.tools.containers import create_container, rename_container
 from mcp_inventory.tools.queries import (
     get_inventory,
     get_container,
@@ -287,6 +288,64 @@ async def inventory_delete_items(
     return await delete_items(container, items, dry_run)
 
 
+# Register container management tools (mutating)
+@mcp.tool()
+async def inventory_create_container(
+    name: str,
+    description: Optional[str] = None,
+    dry_run: bool = False
+) -> str:
+    """Create a new empty container in the inventory.
+
+    Use this tool when the user wants to add a new container, box, room,
+    or storage location, or create a location before putting items into it.
+
+    Examples:
+        - "Add a container called garage-shelf"
+        - "Create a new location for tools"
+
+    Args:
+        name: The name/ID for the new container (e.g., "garage-shelf-2")
+        description: Optional location description (e.g., "Second shelf in the garage")
+        dry_run: If True, preview what would be created without executing.
+
+    Returns:
+        A human-readable description of the created container.
+    """
+    return await create_container(name, description=description, dry_run=dry_run)
+
+
+@mcp.tool()
+async def inventory_rename_container(
+    container_id: str,
+    new_name: Optional[str] = None,
+    description: Optional[str] = None,
+    dry_run: bool = False
+) -> str:
+    """Rename a container and/or update its location description.
+
+    Use this tool when the user wants to rename a container, box, room, or
+    storage location, or update where a container is described as being located.
+    All items in the container carry over to the new name.
+
+    Examples:
+        - "Rename the toolbox to red-toolbox"
+        - "Update the garage container's description"
+
+    Args:
+        container_id: The current container ID or name (e.g., "toolbox")
+        new_name: The new container ID or name (omit for description-only update)
+        description: New location description (omit to keep the current one)
+        dry_run: If True, preview what would change without executing.
+
+    Returns:
+        A human-readable description of what changed.
+    """
+    return await rename_container(
+        container_id, new_name=new_name, description=description, dry_run=dry_run
+    )
+
+
 # Register a natural language meta-tool (optional - for simpler UX)
 @mcp.tool()
 async def inventory(
@@ -326,6 +385,25 @@ async def inventory(
     command_lower = command.lower().strip()
 
     # Simple keyword-based routing for direct calls
+    if any(word in command_lower for word in ["rename", "move container"]):
+        return (
+            "This command appears to be for renaming a container. "
+            "Please use the 'inventory_rename_container' tool with:\n"
+            "- container_id: the current container name\n"
+            "- new_name: the new container name (optional if only updating description)\n"
+            "- description: new location description (optional)\n"
+            f"- dry_run: {dry_run}"
+        )
+    if "container" in command_lower and any(
+        word in command_lower for word in ["add", "create", "new"]
+    ):
+        return (
+            "This command appears to be for creating a container. "
+            "Please use the 'inventory_create_container' tool with:\n"
+            "- name: the new container name\n"
+            "- description: optional location description\n"
+            f"- dry_run: {dry_run}"
+        )
     if any(word in command_lower for word in ["add", "create", "put", "place", "insert"]):
         return (
             "This command appears to be for adding items. "
@@ -371,7 +449,9 @@ async def inventory(
             "- inventory_get_container: See specific container contents\n"
             "- inventory_find_location: Find where an item is\n"
             "- inventory_create_items: Add items to a container\n"
-            "- inventory_delete_items: Remove items from a container"
+            "- inventory_delete_items: Remove items from a container\n"
+            "- inventory_create_container: Create a new container\n"
+            "- inventory_rename_container: Rename a container or update its description"
         )
 
 
