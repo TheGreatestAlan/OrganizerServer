@@ -93,13 +93,13 @@ public class InventoryResource {
         }
 
         String containerId = request.getId().trim();
-        if (inventory.containerExists(containerId)) {
+        boolean created = inventory.createContainer(containerId, request.getLocationDescription());
+        if (!created) {
             return Response.status(Response.Status.CONFLICT)
                     .entity("Container '" + containerId + "' already exists.")
                     .build();
         }
 
-        inventory.createContainer(containerId, request.getLocationDescription());
         return Response.status(Response.Status.CREATED)
                 .entity("Container created.")
                 .header("Access-Control-Allow-Origin", "*")
