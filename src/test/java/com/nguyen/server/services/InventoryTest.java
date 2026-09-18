@@ -57,6 +57,19 @@ class InventoryTest {
     }
 
     @Test
+    void testRenameContainerToExistingReturnsFalse() {
+        inventory.createContainer("a", null);
+        inventory.createContainer("b", null);
+        inventory.createItemsInContainer("b", List.of("wrench"));
+
+        boolean result = inventory.renameContainer("a", "b", null);
+
+        assertFalse(result);
+        assertTrue(inventory.containerExists("a"));
+        assertTrue(inventory.getContainerById("b").contains("wrench"));
+    }
+
+    @Test
     void testRenameContainerDescriptionOnly() {
         inventory.createContainer("shed", "back yard");
         assertTrue(inventory.renameContainer("shed", null, "side yard"));

@@ -180,6 +180,12 @@ public class Inventory {
         oldId = oldId.trim();
         if (newId != null) {
             newId = newId.trim();
+            if (newId.isEmpty()) {
+                newId = null;
+            }
+        }
+        if (newId != null && !newId.equals(oldId) && organizerRepository.containerExists(newId)) {
+            return false;
         }
         boolean updated = organizerRepository.renameContainer(oldId, newId, description);
         if (updated) {
