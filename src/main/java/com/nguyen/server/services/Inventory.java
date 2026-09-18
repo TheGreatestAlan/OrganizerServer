@@ -161,4 +161,30 @@ public class Inventory {
 
         return updated;
     }
+
+    public boolean containerExists(String containerId) {
+        return organizerRepository.containerExists(containerId.trim());
+    }
+
+    public boolean createContainer(String containerId, String description) {
+        containerId = containerId.trim();
+        if (organizerRepository.containerExists(containerId)) {
+            return false;
+        }
+        organizerRepository.createContainer(containerId, description);
+        refreshCache();
+        return true;
+    }
+
+    public boolean renameContainer(String oldId, String newId, String description) {
+        oldId = oldId.trim();
+        if (newId != null) {
+            newId = newId.trim();
+        }
+        boolean updated = organizerRepository.renameContainer(oldId, newId, description);
+        if (updated) {
+            refreshCache();
+        }
+        return updated;
+    }
 }
